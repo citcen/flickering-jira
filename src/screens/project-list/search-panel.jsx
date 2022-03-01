@@ -1,40 +1,36 @@
-import {useEffect, useState} from "react";
-
-export const SearchPanel = () => {
-  // ÏîÄ¿Ãû
-  const [param, setParam] = useState({
-    name: "",
-    personId: ""
-  })
-  // ÏîÄ¿¸ºÔğÈË
-  const [users, setUsers] = useState([])
-  // ²éÑ¯µÄÊı¾İÁĞ±í
-  const [list, setList] = useState([])
-  // ²éÑ¯Êı¾İ
-  useEffect(() => {
-    fetch("").then(async resp => {
-      if (resp.ok) {
-        setList(await resp.json())
-      }
-    })
-
-  }, [param])
-
-  return  <form>
-    <div>
-      <input type="text" placeholder={"ÏîÄ¿Ãû"} value={param.name} onChange={evt => setParam({
-        ...param,
-        name: evt.target.value
-      })}/>
-      <select value={param.personId} onChange={evt => setParam({
-        ...param,
-        personId: evt.target.value
-      })}>
-        <option value={""}>¸ºÔğÈË</option>
-        {
-          users.map(user => <option value={user.id}>user.name</option>)
-        }
-      </select>
-    </div>
-  </form>
-}
+import React from "react";
+export const SearchPanel = ({ param, setParam, users }) => {
+  return (
+    <form>
+      <div>
+        <input
+          type="text"
+          placeholder={"é¡¹ç›®åç§°"}
+          value={param.name}
+          onChange={(evt) =>
+            setParam({
+              ...param,
+              name: evt.target.value,
+            })
+          }
+        />
+        <select
+          value={param.personId}
+          onChange={(evt) =>
+            setParam({
+              ...param,
+              personId: evt.target.value,
+            })
+          }
+        >
+          <option value={""}>è´Ÿè´£äºº</option>
+          {users.map((user) => (
+            <option value={user.id} key={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    </form>
+  );
+};
