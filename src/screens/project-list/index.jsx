@@ -2,7 +2,7 @@ import React from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useEffect, useState } from "react";
-import { cleanObject } from "../../utils";
+import { cleanObject, useDebounce, useMount } from "../../utils";
 import * as qs from "qs";
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -13,29 +13,30 @@ export const ProjectListScreen = () => {
     name: "",
     personId: "",
   });
+  const debounceParam = useDebounce(param, 1000);
   // 项目负责人
   const [users, setUsers] = useState([]);
 
   // 项目数据
   const [list, setList] = useState([]);
   // 查询负责人
-  useEffect(() => {
+  useMount(() => {
     fetch(`${baseUrl}/users`).then(async (resp) => {
       if (resp.ok) {
         setUsers(await resp.json());
       }
     });
-  }, []);
+  });
   // 实时查询数据
   useEffect(() => {
-    fetch(`${baseUrl}/projects?${qs.stringify(cleanObject(param))}`).then(
-      async (resp) => {
-        if (resp.ok) {
-          setList(await resp.json());
-        }
+    fetch(
+      `${baseUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
+    ).then(async (resp) => {
+      if (resp.ok) {
+        setList(await resp.json());
       }
-    );
-  }, [param]);
+    });
+  }, [debounceParam]);
 
   return (
     <div>
