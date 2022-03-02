@@ -1,6 +1,18 @@
 import React from "react";
+import { User } from "./search-panel";
 
-export const List = ({ list, users }) => {
+interface List {
+  id: string;
+  personId: string;
+  name: string;
+  organization: string;
+}
+
+interface ListProps {
+  list: List[];
+  users: User[];
+}
+export const List = ({ list, users }: ListProps) => {
   return (
     <table>
       <thead>

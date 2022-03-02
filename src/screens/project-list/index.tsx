@@ -13,7 +13,7 @@ export const ProjectListScreen = () => {
     name: "",
     personId: "",
   });
-  const debounceParam = useDebounce(param, 1000);
+  const debounceParam = useDebounce(param, 300);
   // 项目负责人
   const [users, setUsers] = useState([]);
 

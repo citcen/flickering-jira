@@ -1,14 +1,16 @@
 // 避免数字 0 返回false
 import { useEffect, useState } from "react";
 
-export const isFalsy = (value) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
 // 清除空的object
-export const cleanObject = (obj) => {
+export const cleanObject = (obj: object) => {
   const result = { ...obj };
   Object.keys(result).forEach((key) => {
+    // @ts-ignore
     const value = result[key];
     if (isFalsy(value)) {
+      // @ts-ignore
       delete result[key];
     }
   });
@@ -16,7 +18,7 @@ export const cleanObject = (obj) => {
 };
 
 // useMont包装页面加载后的操作（useEffect）
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     if (callback && typeof callback === "function") {
       callback();
@@ -25,7 +27,7 @@ export const useMount = (callback) => {
 };
 
 //
-export const useDebounce = (value, delay) => {
+export const useDebounce = (value: any, delay?: number) => {
   const [debounce, setDebounce] = useState(value);
 
   useEffect(() => {
