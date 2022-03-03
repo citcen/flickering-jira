@@ -51,9 +51,13 @@
     "husky": "^7.0.4",
     "json-server": "^0.17.0",
     "lint-staged": "^12.3.4",
+    "msw": "^0.38.2",
     "prettier": "2.5.1"
   },
   "lint-staged": {
     "*.{js,css,md,ts,tsx,jsx}": "prettier --write"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

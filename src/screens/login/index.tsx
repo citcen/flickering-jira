@@ -4,7 +4,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = () => {
   const Login = (param: { username: string; password: string }) => {
-    fetch(`${baseUrl}/login`, {
+    fetch(`/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
