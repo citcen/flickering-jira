@@ -26,7 +26,7 @@ export const useMount = (callback: () => void) => {
   }, []);
 };
 
-//
+// 防抖
 export const useDebounce = <D>(value: D, delay?: number) => {
   const [debounce, setDebounce] = useState(value);
 
