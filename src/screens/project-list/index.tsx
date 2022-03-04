@@ -4,6 +4,7 @@ import { List } from "./list";
 import { useEffect, useState } from "react";
 import { cleanObject, useDebounce, useMount } from "../../utils";
 import * as qs from "qs";
+import { useHttp } from "../../utils/http";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -14,28 +15,17 @@ export const ProjectListScreen = () => {
     personId: "",
   });
   const debounceParam = useDebounce(param, 300);
-  // 项目负责人
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); // 项目负责人
+  const [list, setList] = useState([]); // 项目数据
+  const pageReq = useHttp();
 
-  // 项目数据
-  const [list, setList] = useState([]);
-  // 查询负责人
   useMount(() => {
-    fetch(`${baseUrl}/users`).then(async (resp) => {
-      if (resp.ok) {
-        setUsers(await resp.json());
-      }
-    });
+    // 查询负责人
+    pageReq("users").then(setUsers);
   });
   // 实时查询数据
   useEffect(() => {
-    fetch(
-      `${baseUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
-    ).then(async (resp) => {
-      if (resp.ok) {
-        setList(await resp.json());
-      }
-    });
+    pageReq("projects", { data: cleanObject(debounceParam) }).then(setList);
   }, [debounceParam]);
 
   return (

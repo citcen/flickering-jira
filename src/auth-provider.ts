@@ -9,6 +9,7 @@ export const getToken = () => window.localStorage.getItem(localStorageKey);
 
 // 设置token
 export const handleUserResponse = ({ user }: { user: User }) => {
+  console.log(36666);
   window.localStorage.setItem(localStorageKey, user.token || "");
   return user;
 };
@@ -48,5 +49,5 @@ export const register = (data: { username: string; password: string }) => {
 };
 
 // 登出
-export const loginOut = async () =>
+export const logout = async () =>
   window.localStorage.removeItem(localStorageKey);
