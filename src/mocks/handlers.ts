@@ -1,13 +1,24 @@
 // src/mocks/handlers.js
 import { rest } from "msw";
+import { nanoid } from "nanoid";
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const handlers = [
-  rest.post("/login", (req, res, ctx) => {
-    console.log(1);
+  rest.post(`${baseUrl}/login`, (req, res, ctx) => {
     // 在会话中保留用户的身份验证
     sessionStorage.setItem("is-authenticated", "true");
+    const { id } = req.params;
+    console.log(id);
 
-    return res(ctx.status(200));
+    return res(
+      ctx.status(200),
+      ctx.json({
+        user: {
+          name: (req.body as any).username,
+          token: req.id,
+        },
+      })
+    );
   }),
 
   rest.get("/user", (req, res, ctx) => {
