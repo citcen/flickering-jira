@@ -120,16 +120,18 @@ export const authHandlers = [
     );
     if (personId !== "all") {
       projectsData = [
-        projectsData.find((item: ProjectsData) => item.personId == personId),
+        projectsData.find(
+          (item: ProjectsData) => String(item.personId) === personId
+        ),
       ];
     }
     if (name !== "all") {
       projectsData = [
-        projectsData.find((item: ProjectsData) => item.name == name),
+        projectsData.find((item: ProjectsData) => String(item.name) === name),
       ];
     }
     if (projectsData[0] !== undefined) {
       return res(ctx.status(200), ctx.json(projectsData));
-    } else return res(ctx.status(500), ctx.json("查询为空"));
+    } else return res(ctx.status(404), ctx.json("查询为空"));
   }),
 ];

@@ -10,7 +10,7 @@ export const ProjectListScreen = () => {
   // 用户选择数据
   const [param, setParam] = useState({
     name: "",
-    personId: "all",
+    personId: "",
   });
   const debounceParam = useDebounce(param, 300);
   const [users, setUsers] = useState([]); // 项目负责人
@@ -24,7 +24,9 @@ export const ProjectListScreen = () => {
   // 实时查询数据
   useEffect(() => {
     pageReq(
-      `projects/${param.personId}/${param.name ? param.name : "all"}`
+      `projects/${param.personId ? param.personId : "all"}/${
+        param.name ? param.name : "all"
+      }`
     ).then(setList);
   }, [debounceParam]);
 
