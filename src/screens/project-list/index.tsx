@@ -6,13 +6,11 @@ import { cleanObject, useDebounce, useMount } from "../../utils";
 import * as qs from "qs";
 import { useHttp } from "../../utils/http";
 
-const baseUrl = process.env.REACT_APP_API_URL;
-
 export const ProjectListScreen = () => {
   // 用户选择数据
   const [param, setParam] = useState({
     name: "",
-    personId: "",
+    personId: "all",
   });
   const debounceParam = useDebounce(param, 300);
   const [users, setUsers] = useState([]); // 项目负责人
@@ -25,7 +23,9 @@ export const ProjectListScreen = () => {
   });
   // 实时查询数据
   useEffect(() => {
-    pageReq("projects", { data: cleanObject(debounceParam) }).then(setList);
+    pageReq(
+      `projects/${param.personId}/${param.name ? param.name : "all"}`
+    ).then(setList);
   }, [debounceParam]);
 
   return (
