@@ -2,14 +2,18 @@
 
 import { User } from "./screens/project-list/search-panel";
 const localStorageKey = "__auth_provider_token__";
+const localStorageUser = "__user_msg__";
 const baseUrl = process.env.REACT_APP_API_URL;
 
 // 获取token
 export const getToken = () => window.localStorage.getItem(localStorageKey);
+// 获取user
+export const getUser = () => window.localStorage.getItem(localStorageUser);
 
 // 设置token
 export const handleUserResponse = ({ user }: { user: User }) => {
   window.localStorage.setItem(localStorageKey, user.token || "");
+  window.localStorage.setItem(localStorageUser, JSON.stringify(user));
   return user;
 };
 
@@ -48,5 +52,7 @@ export const register = (data: { username: string; password: string }) => {
 };
 
 // 登出
-export const logout = async () =>
+export const logout = async () => {
   window.localStorage.removeItem(localStorageKey);
+  window.localStorage.removeItem(localStorageUser);
+};

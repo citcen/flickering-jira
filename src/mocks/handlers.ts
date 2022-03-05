@@ -1,6 +1,7 @@
 // src/mocks/handlers.js
 import { rest } from "msw";
 import { getToken } from "../auth-provider";
+import { nanoid } from "nanoid";
 const baseUrl = process.env.REACT_APP_API_URL;
 const usersData = [
   {
@@ -69,6 +70,7 @@ export const handlers = [
       ctx.status(200),
       ctx.json({
         user: {
+          id: nanoid(),
           name: (req.body as any).username,
           token: req.id,
         },
@@ -81,6 +83,7 @@ export const handlers = [
       ctx.status(200),
       ctx.json({
         user: {
+          id: nanoid(),
           name: (req.body as any).username,
           token: req.id,
         },

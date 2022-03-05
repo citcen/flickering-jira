@@ -1,6 +1,9 @@
+// 全局状态
 import React, { ReactNode, useContext, useState } from "react";
 import * as auth from "auth-provider";
 import { User } from "screens/project-list/search-panel";
+import { useMount } from "../utils";
+import { getUser } from "auth-provider";
 
 interface AuthForm {
   username: string;
@@ -23,6 +26,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
+
+  useMount(() => {
+    setUser(JSON.parse(getUser() as string));
+  });
 
   return (
     <AuthContext.Provider
