@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
 // 清除空的object
-export const cleanObject = (obj: object) => {
+export const cleanObject = (obj: { [key: string]: unknown }) => {
   const result = { ...obj };
   Object.keys(result).forEach((key) => {
-    // @ts-ignore
     const value = result[key];
     if (isFalsy(value)) {
-      // @ts-ignore
       delete result[key];
     }
   });
