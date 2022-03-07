@@ -71,6 +71,16 @@ window.localStorage.getItem("projectsData") ||
 
 export const handlers = [
   rest.post(`${baseUrl}/login`, (req, res, ctx) => {
+    const reqBody: any = req.body;
+    if (reqBody.username === "1") {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "用户名或密码错误",
+        })
+      );
+    }
+
     return res(
       ctx.status(200),
       ctx.json({
@@ -84,6 +94,16 @@ export const handlers = [
   }),
 
   rest.post(`${baseUrl}/register`, (req, res, ctx) => {
+    const reqBody: any = req.body;
+    if (reqBody.username === "111") {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "用户名已注册",
+        })
+      );
+    }
+
     return res(
       ctx.status(200),
       ctx.json({
@@ -103,7 +123,7 @@ export const authHandlers = [
       return res(
         ctx.status(401),
         ctx.json({
-          errorMessage: "请重新登录",
+          message: "请重新登录",
         })
       );
     }
@@ -115,7 +135,7 @@ export const authHandlers = [
       return res(
         ctx.status(401),
         ctx.json({
-          errorMessage: "请重新登录",
+          message: "请重新登录",
         })
       );
     }
@@ -137,6 +157,12 @@ export const authHandlers = [
     }
     if (projectsData[0] !== undefined) {
       return res(ctx.status(200), ctx.json(projectsData));
-    } else return res(ctx.status(404), ctx.json("查询为空"));
+    } else
+      return res(
+        ctx.status(404),
+        ctx.json({
+          message: "查询失败",
+        })
+      );
   }),
 ];

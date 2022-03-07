@@ -2,8 +2,9 @@ import React from "react";
 import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
+import { TableProps } from "antd/es/table";
 
-interface List {
+export interface List {
   id: string;
   personId: string;
   name: string;
@@ -11,13 +12,13 @@ interface List {
   creationTime: number;
 }
 
-interface ListProps {
-  list: List[];
+interface ListProps extends TableProps<List> {
   users: User[];
 }
-export const List = ({ list, users }: ListProps) => {
+export const List = ({ users, ...props }: ListProps) => {
   return (
     <Table
+      {...props}
       pagination={false}
       columns={[
         {
@@ -53,7 +54,6 @@ export const List = ({ list, users }: ListProps) => {
           },
         },
       ]}
-      dataSource={list}
     />
   );
 };
