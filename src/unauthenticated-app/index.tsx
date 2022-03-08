@@ -9,7 +9,7 @@ import right from "assets/right.svg";
 import Typography from "antd/es/typography";
 
 export const UnauthenticatedApp = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState(Error || null);
   return (
     <Container style={{ display: "flex", justifyContent: "center" }}>

@@ -1,5 +1,5 @@
 // 避免数字 0 返回false
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
@@ -33,4 +33,21 @@ export const useDebounce = <D>(value: D, delay?: number) => {
   }, [value, delay]);
 
   return debounce;
+};
+
+// 页面title
+export const useTitle = (title: string, keepThisTitle = true) => {
+  const oldTitle = useRef(document.title).current;
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
+    return () => {
+      if (!keepThisTitle) {
+        document.title = oldTitle;
+      }
+    };
+  }, [keepThisTitle, oldTitle]);
 };
