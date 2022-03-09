@@ -6,18 +6,24 @@ import { useDebounce, useTitle } from "../../utils";
 import { Typography } from "antd";
 import styled from "@emotion/styled";
 import { useProjects, useUsers } from "../../utils/use-api";
+import { useUrlQueryParam } from "../../utils/get-url-params";
 
 export const ProjectListScreen = () => {
   // 用户选择数据
-  const [param, setParam] = useState({
+  const [, setParam] = useState({
     name: "",
     personId: "",
   });
+  const [param] = useUrlQueryParam(["name", "personId"]);
   const debounceParam = useDebounce(param, 200);
   const { isLoading, error, data: list } = useProjects(debounceParam);
   const { data: users } = useUsers();
 
   useTitle("项目列表", false);
+
+  const [name, a] = useUrlQueryParam(["name", "id"]);
+  console.log(name);
+  console.log(a);
 
   return (
     <Container>

@@ -18,9 +18,12 @@ export const cleanObject = (obj: { [key: string]: unknown }) => {
 // useMont包装页面加载后的操作（useEffect）
 export const useMount = (callback: () => void) => {
   useEffect(() => {
-    if (callback && typeof callback === "function") {
-      callback();
-    }
+    let abortController = new AbortController();
+    callback();
+    return () => {
+      abortController.abort();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
@@ -51,3 +54,6 @@ export const useTitle = (title: string, keepThisTitle = true) => {
     };
   }, [keepThisTitle, oldTitle]);
 };
+
+// 重置到首页
+export const resetRoute = () => (window.location.href = window.location.origin);
