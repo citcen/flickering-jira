@@ -10,21 +10,16 @@ import { useUrlQueryParam } from "../../utils/get-url-params";
 
 export const ProjectListScreen = () => {
   // 用户选择数据
-  const [, setParam] = useState({
+  /*const [, setParam] = useState({
     name: "",
     personId: "",
-  });
-  const [param] = useUrlQueryParam(["name", "personId"]);
+  });*/
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
   const debounceParam = useDebounce(param, 200);
   const { isLoading, error, data: list } = useProjects(debounceParam);
   const { data: users } = useUsers();
 
   useTitle("项目列表", false);
-
-  const [name, a] = useUrlQueryParam(["name", "id"]);
-  console.log(name);
-  console.log(a);
-
   return (
     <Container>
       <h1>项目列表</h1>
@@ -36,6 +31,8 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
+
+ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
   padding: 3.2rem;
