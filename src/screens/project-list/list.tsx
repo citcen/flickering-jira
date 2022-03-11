@@ -1,13 +1,12 @@
-import React from "react";
-import { User } from "./search-panel";
+import { User } from "components/user-select";
 import { Table } from "antd";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
 import { Link } from "react-router-dom";
 
 export interface List {
-  id: string;
-  personId: string;
+  id: number;
+  personId: number;
   name: string;
   organization: string;
   creationTime: number;

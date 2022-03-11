@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAsync } from "./use-async";
 import { List } from "../screens/project-list/list";
 import { useHttp } from "./http";
-import { User } from "../screens/project-list/search-panel";
+import { User } from "components/user-select";
 
 // 查询 projects
 export const useProjects = (param?: Partial<List>) => {

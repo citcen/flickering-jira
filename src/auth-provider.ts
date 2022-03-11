@@ -1,6 +1,7 @@
 /* 用户授权。使用第三方auth服务(firebase/auth0)可不开发 */
 
-import { User } from "./screens/project-list/search-panel";
+import { User } from "components/user-select";
+
 const localStorageKey = "__auth_provider_token__";
 const localStorageUser = "__user_msg__";
 const baseUrl = process.env.REACT_APP_API_URL;
