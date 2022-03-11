@@ -28,6 +28,7 @@ const projectsData = [
     personId: 1,
     organization: "外卖组",
     creationTime: 1600229787312,
+    pin: false,
   },
   {
     id: 2,
@@ -35,6 +36,7 @@ const projectsData = [
     personId: 2,
     organization: "团购组",
     creationTime: 1600229787312,
+    pin: false,
   },
   {
     id: 3,
@@ -42,6 +44,7 @@ const projectsData = [
     personId: 3,
     organization: "物料组",
     creationTime: 1594500007512,
+    pin: true,
   },
   {
     id: 4,
@@ -49,6 +52,7 @@ const projectsData = [
     personId: 4,
     organization: "总部组",
     creationTime: 16055729750002,
+    pin: true,
   },
   {
     id: 5,
@@ -56,6 +60,7 @@ const projectsData = [
     personId: 4,
     organization: "送餐组",
     creationTime: 16065729750002,
+    pin: true,
   },
 ];
 
@@ -64,6 +69,7 @@ interface ProjectsData {
   name: string;
   personId: string;
   organization: string;
+  pin: boolean;
 }
 // 将初始化数据存入 window.localStorage
 window.localStorage.getItem("projectsData") ||
@@ -128,6 +134,42 @@ export const authHandlers = [
       );
     }
     return res(ctx.status(200), ctx.json(usersData));
+  }),
+
+  rest.patch(`${baseUrl}/projects/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+
+    if (req.params.id) {
+      let projectsData = JSON.parse(
+        window.localStorage.getItem("projectsData") || ""
+      );
+      projectsData.map((item: ProjectsData) => {
+        if (String(item.id) === req.params.id) {
+          item.pin = (req.body as any).pin;
+        }
+      });
+      const resultData = [
+        projectsData.find(
+          (item: ProjectsData) => String(item.id) === req.params.id
+        ),
+      ];
+      window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
+      return res(ctx.status(200), ctx.json(resultData));
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "操作失败",
+        })
+      );
+    }
   }),
 
   rest.get(`${baseUrl}/projects/:personId/:name`, (req, res, ctx) => {

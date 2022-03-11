@@ -1,7 +1,7 @@
 /* 异步请求的统一 */
 import { useEffect } from "react";
 import { useAsync } from "./use-async";
-import { List } from "../screens/project-list/list";
+import { List } from "screens/project-list/list";
 import { useHttp } from "./http";
 import { User } from "components/user-select";
 
@@ -32,4 +32,23 @@ export const useUsers = () => {
   }, []);
 
   return result;
+};
+
+// 修改 projects
+export const useEditProject = () => {
+  const pageReq = useHttp();
+  const { run, ...result } = useAsync();
+  const mutate = (params: Partial<List>) => {
+    return run(
+      pageReq(`projects/${params.id}`, {
+        data: params,
+        method: "PATCH",
+      })
+    );
+  };
+
+  return {
+    mutate,
+    result,
+  };
 };

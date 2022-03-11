@@ -35,7 +35,11 @@ export const IdSelect = (props: PropsSelect) => {
         <Select.Option value={0}>{defaultName}</Select.Option>
       ) : null}
       {options?.map((item) => {
-        return <Select.Option value={item.id}>{item.name}</Select.Option>;
+        return (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
+          </Select.Option>
+        );
       })}
     </Select>
   );
