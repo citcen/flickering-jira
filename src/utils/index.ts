@@ -57,3 +57,16 @@ export const useTitle = (title: string, keepThisTitle = true) => {
 
 // 重置到首页
 export const resetRoute = () => (window.location.href = window.location.origin);
+
+// 当组件还未挂载或卸载时返回false，反之亦反
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+
+  return mountedRef;
+};

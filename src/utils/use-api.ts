@@ -9,6 +9,7 @@ import { User } from "components/user-select";
 export const useProjects = (param?: Partial<List>) => {
   const pageReq = useHttp();
   const { run, ...result } = useAsync<List[]>();
+
   // 实时查询数据
   useEffect(() => {
     run(
@@ -18,7 +19,7 @@ export const useProjects = (param?: Partial<List>) => {
         }`
       )
     );
-  }, [param]);
+  }, [param, run]);
 
   return result;
 };
