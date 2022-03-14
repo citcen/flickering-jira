@@ -1,5 +1,8 @@
+/* 通用样式组件 */
 import styled from "@emotion/styled";
+import { Button } from "antd";
 
+// flex行布局
 export const ListRow = styled.div<{
   gap?: number | boolean;
   between?: boolean;
@@ -20,4 +23,9 @@ export const ListRow = styled.div<{
         ? "2rem"
         : undefined};
   }
+`;
+
+// 没有padding的button
+export const ButtonNoPadding = styled(Button)`
+  padding: 0;
 `;
