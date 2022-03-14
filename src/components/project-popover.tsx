@@ -1,8 +1,15 @@
 import { Divider, List, Popover, Typography } from "antd";
 import { useProjects } from "utils/use-api";
 import styled from "@emotion/styled";
+import { ButtonNoPadding } from "./lib";
+import { useDispatch } from "react-redux";
+import {
+  projectListActions,
+  projectListSlice,
+} from "screens/project-list/project-list.slice";
 
-export const ProjectPopover = (props: { projectButton: JSX.Element }) => {
+export const ProjectPopover = () => {
+  const dispatch = useDispatch();
   const { data: projects, isLoading } = useProjects();
   const pinnedProjects = projects?.filter((project) => project.pin);
   const content = (
@@ -16,7 +23,12 @@ export const ProjectPopover = (props: { projectButton: JSX.Element }) => {
         ))}
       </List>
       <Divider />
-      {props.projectButton}
+      <ButtonNoPadding
+        type={"link"}
+        onClick={() => dispatch(projectListActions.openProjectModal())}
+      >
+        创建项目
+      </ButtonNoPadding>
     </ContentContainer>
   );
   return (
