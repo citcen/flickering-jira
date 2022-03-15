@@ -2,7 +2,7 @@ import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
 import { cleanObject } from "./index";
 
-// 返回页面中url带的参数值
+// 读写页面中url带的参数值
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   return [

@@ -1,14 +1,15 @@
 import React, { useMemo } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import { useDebounce, useTitle } from "../../utils";
+import { useDebounce, useTitle } from "utils";
 import { Typography } from "antd";
 import styled from "@emotion/styled";
-import { useProjects, useUsers } from "../../utils/use-api";
-import { useUrlQueryParam } from "../../utils/get-url-params";
-import { ListRow } from "components/lib";
+import { useProjects, useUsers } from "utils/use-api";
+import { useUrlQueryParam } from "utils/get-url-params";
+import { ButtonNoPadding, ListRow } from "components/lib";
+import { useProjectModal } from "./project-util";
 
-export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+export const ProjectListScreen = () => {
   const [param, setParam] = useUrlQueryParam(["name", "personId"]);
   const listParam = useMemo(
     () => ({ ...param, personId: Number(param.personId) || undefined }),
@@ -20,24 +21,22 @@ export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
     data: list,
   } = useProjects(useDebounce(listParam, 200));
   const { data: users } = useUsers();
+  const { open } = useProjectModal();
 
   useTitle("项目列表", false);
   return (
     <Container>
       <ListRow between={true}>
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding type={"link"} onClick={open}>
+          创建项目
+        </ButtonNoPadding>
       </ListRow>
       <SearchPanel param={listParam} setParam={setParam} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List
-        projectButton={props.projectButton}
-        loading={isLoading}
-        users={users || []}
-        dataSource={list || []}
-      />
+      <List loading={isLoading} users={users || []} dataSource={list || []} />
     </Container>
   );
 };

@@ -18,7 +18,6 @@ export interface List {
 
 interface ListProps extends TableProps<List> {
   users: User[];
-  projectButton: JSX.Element;
 }
 export const List = ({ users, ...props }: ListProps) => {
   const { mutate } = useEditProject();
@@ -81,7 +80,6 @@ export const List = ({ users, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key={"edit"}>
-                      {props.projectButton}
                       {/*<ButtonNoPadding type={"link"}>编辑</ButtonNoPadding>*/}
                       <ButtonNoPadding type={"link"}>删除</ButtonNoPadding>
                     </Menu.Item>
