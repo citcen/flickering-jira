@@ -64,11 +64,21 @@ const projectsData = [
   },
 ];
 
+const defaultProjectData = {
+  id: nanoid(),
+  name: "",
+  personId: null,
+  organization: "",
+  creationTime: new Date().getTime(),
+  pin: false,
+};
+
 interface ProjectsData {
   id: string;
   name: string;
   personId: string;
   organization: string;
+  creationTime?: number;
   pin: boolean;
 }
 // 将初始化数据存入 window.localStorage
@@ -136,6 +146,7 @@ export const authHandlers = [
     return res(ctx.status(200), ctx.json(usersData));
   }),
 
+  // 修改
   rest.patch(`${baseUrl}/projects/:id`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -146,22 +157,21 @@ export const authHandlers = [
       );
     }
 
-    if (req.params.id) {
+    const data = req.body as any;
+
+    if (req.params?.id) {
       let projectsData = JSON.parse(
         window.localStorage.getItem("projectsData") || ""
       );
+      let newData: any = [];
       projectsData.map((item: ProjectsData) => {
         if (String(item.id) === req.params.id) {
-          item.pin = (req.body as any).pin;
-        }
+          newData.push({ ...item, ...data });
+        } else newData.push({ ...item });
       });
-      const resultData = [
-        projectsData.find(
-          (item: ProjectsData) => String(item.id) === req.params.id
-        ),
-      ];
-      window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
-      return res(ctx.status(200), ctx.json(resultData));
+
+      window.localStorage.setItem("projectsData", JSON.stringify(newData));
+      return res(ctx.status(200), ctx.json(newData));
     } else {
       return res(
         ctx.status(400),
@@ -172,6 +182,7 @@ export const authHandlers = [
     }
   }),
 
+  // 查询
   rest.get(`${baseUrl}/projects/:personId/:name`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -201,5 +212,35 @@ export const authHandlers = [
       return res(ctx.status(200), ctx.json(projectsData));
     }
     return res(ctx.status(200), ctx.json([]));
+  }),
+
+  // 添加
+  rest.post(`${baseUrl}/projects`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const data = req.body as any;
+
+    if (data) {
+      let projectsData = JSON.parse(
+        window.localStorage.getItem("projectsData") || ""
+      );
+      projectsData.push({ ...defaultProjectData, ...data });
+
+      window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
+      return res(ctx.status(200), ctx.json(projectsData));
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "操作失败",
+        })
+      );
+    }
   }),
 ];

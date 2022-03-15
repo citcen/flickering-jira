@@ -38,3 +38,29 @@ export const useEditProject = () => {
     }
   );
 };
+
+// 查询project的详情
+export const useProjectDetail = (id?: number) => {
+  const pageReq = useHttp();
+
+  return useQuery<List>(["project", { id }], () => pageReq(`project/${id}`), {
+    enabled: !!id, // id 有值的时候才查询
+  });
+};
+
+// 添加项目
+export const useAddProject = () => {
+  const pageReq = useHttp();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (params: Partial<List>) =>
+      pageReq(`projects`, {
+        data: params,
+        method: "POST",
+      }),
+    {
+      onSuccess: () => queryClient.invalidateQueries("projects"),
+    }
+  );
+};
