@@ -199,12 +199,7 @@ export const authHandlers = [
     }
     if (projectsData[0] !== undefined) {
       return res(ctx.status(200), ctx.json(projectsData));
-    } else
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message: "查询失败",
-        })
-      );
+    }
+    return res(ctx.status(200), ctx.json([]));
   }),
 ];

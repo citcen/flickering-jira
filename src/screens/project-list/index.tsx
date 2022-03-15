@@ -2,11 +2,10 @@ import React, { useMemo } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useTitle } from "utils";
-import { Typography } from "antd";
 import styled from "@emotion/styled";
 import { useProjects, useUsers } from "utils/use-api";
 import { useUrlQueryParam } from "utils/get-url-params";
-import { ButtonNoPadding, ListRow } from "components/lib";
+import { ButtonNoPadding, ErrorBox, ListRow } from "components/lib";
 import { useProjectModal } from "./project-util";
 
 export const ProjectListScreen = () => {
@@ -32,10 +31,10 @@ export const ProjectListScreen = () => {
           创建项目
         </ButtonNoPadding>
       </ListRow>
+
       <SearchPanel param={listParam} setParam={setParam} />
-      {error ? (
-        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
-      ) : null}
+      <ErrorBox error={error} />
+
       <List loading={isLoading} users={users || []} dataSource={list || []} />
     </Container>
   );

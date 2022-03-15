@@ -1,55 +1,40 @@
 /* 异步请求的统一 */
-import { useEffect } from "react";
-import { useAsync } from "./use-async";
 import { List } from "screens/project-list/list";
 import { useHttp } from "./http";
-import { User } from "components/user-select";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 // 查询 projects
 export const useProjects = (param?: Partial<List>) => {
   const pageReq = useHttp();
-  const { run, ...result } = useAsync<List[]>();
 
-  // 实时查询数据
-  useEffect(() => {
-    run(
-      pageReq(
-        `projects/${param?.personId ? param.personId : "all"}/${
-          param?.name ? param.name : "all"
-        }`
-      )
-    );
-  }, [param, run]);
-
-  return result;
+  return useQuery<List[]>(["projects", param], () =>
+    pageReq(
+      `projects/${param?.personId ? param?.personId : "all"}/${
+        param?.name ? param.name : "all"
+      }`
+    )
+  );
 };
 
 // 查询 users
 export const useUsers = () => {
   const pageReq = useHttp();
-  const { run, ...result } = useAsync<User[]>();
-  useEffect(() => {
-    run(pageReq("users"));
-  }, []);
-
-  return result;
+  return useQuery("user", () => pageReq("users"));
 };
 
 // 修改 projects
 export const useEditProject = () => {
   const pageReq = useHttp();
-  const { run, ...result } = useAsync();
-  const mutate = (params: Partial<List>) => {
-    return run(
+  const queryClient = useQueryClient();
+  return useMutation(
+    (params: Partial<List>) =>
       pageReq(`projects/${params.id}`, {
         data: params,
         method: "PATCH",
-      })
-    );
-  };
-
-  return {
-    mutate,
-    result,
-  };
+      }),
+    {
+      // 修改之后重新查询
+      onSuccess: () => queryClient.invalidateQueries("projects"),
+    }
+  );
 };
