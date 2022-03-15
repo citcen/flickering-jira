@@ -170,8 +170,14 @@ export const authHandlers = [
         } else newData.push({ ...item });
       });
 
+      const projectData = [
+        projectsData.find(
+          (item: ProjectsData) => String(item.id) === req.params?.id
+        ),
+      ];
+
       window.localStorage.setItem("projectsData", JSON.stringify(newData));
-      return res(ctx.status(200), ctx.json(newData));
+      return res(ctx.status(200), ctx.json(projectData));
     } else {
       return res(
         ctx.status(400),
@@ -212,6 +218,29 @@ export const authHandlers = [
       return res(ctx.status(200), ctx.json(projectsData));
     }
     return res(ctx.status(200), ctx.json([]));
+  }),
+
+  // 查询详情
+  rest.get(`${baseUrl}/projectDetail/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const { id } = req.params;
+    let projectsData = JSON.parse(
+      window.localStorage.getItem("projectsData") || ""
+    );
+    projectsData = [
+      projectsData.find((item: ProjectsData) => String(item.id) === id),
+    ];
+    if (projectsData[0] !== undefined) {
+      return res(ctx.status(200), ctx.json(projectsData[0]));
+    }
+    return res(ctx.status(200), ctx.json({}));
   }),
 
   // 添加
