@@ -1,5 +1,5 @@
 import { Button, Drawer, Form, Input, Spin } from "antd";
-import { useProjectModal } from "./project-util";
+import { useProjectModal, useProjectsQueryKey } from "./project-util";
 import { UserSelect } from "components/user-select";
 import { useEditProject, useAddProject } from "utils/use-api";
 import { useForm } from "antd/lib/form/Form";
@@ -13,17 +13,24 @@ export const ProjectModal = () => {
     useProjectModal();
 
   const useMutateProject = projectEditing ? useEditProject : useAddProject;
-  const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject();
+  const {
+    mutateAsync,
+    error,
+    isLoading: mutateLoading,
+  } = useMutateProject(useProjectsQueryKey());
 
   const onFinish = (values: any) => {
     mutateAsync({ ...projectEditing, ...values }).then(() => {
-      form.resetFields();
-      close();
+      closeModal();
     });
   };
 
+  const closeModal = () => {
+    form.resetFields();
+    close();
+  };
+
   useEffect(() => {
-    console.log(projectEditing, "在");
     form.setFieldsValue(projectEditing);
   }, [projectEditing, form]);
 
@@ -31,7 +38,7 @@ export const ProjectModal = () => {
   return (
     <Drawer
       forceRender={true}
-      onClose={() => close()}
+      onClose={closeModal}
       visible={projectModelOpen}
       width={"100%"}
     >

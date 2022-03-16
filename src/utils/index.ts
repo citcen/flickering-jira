@@ -27,7 +27,6 @@ export const useMount = (callback: () => void) => {
     return () => {
       abortController.abort();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

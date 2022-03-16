@@ -272,4 +272,38 @@ export const authHandlers = [
       );
     }
   }),
+  // 删除
+  rest.delete(`${baseUrl}/projects/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const { id } = req.params;
+    let projectsData = JSON.parse(
+      window.localStorage.getItem("projectsData") || ""
+    );
+    projectsData = projectsData.filter(
+      (item: ProjectsData) => String(item.id) !== id
+    );
+    if (projectsData) {
+      window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
+      return res(
+        ctx.status(200),
+        ctx.json({
+          message: "删除成功",
+        })
+      );
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "删除失败",
+        })
+      );
+    }
+  }),
 ];
