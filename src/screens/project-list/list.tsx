@@ -1,4 +1,3 @@
-import { User } from "components/user-select";
 import { Dropdown, Menu, Modal, Table } from "antd";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
@@ -8,6 +7,7 @@ import { useDeleteProject, useEditProject } from "utils/use-api";
 import { ButtonNoPadding } from "components/lib";
 import { useProjectModal, useProjectsQueryKey } from "./project-util";
 import { Project } from "types/project";
+import { User } from "types/user";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
