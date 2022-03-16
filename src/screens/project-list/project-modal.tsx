@@ -4,7 +4,7 @@ import { UserSelect } from "components/user-select";
 import { useEditProject, useAddProject } from "utils/use-api";
 import { useForm } from "antd/lib/form/Form";
 import { useEffect } from "react";
-import { ErrorBox } from "../../components/lib";
+import { ErrorBox } from "components/lib";
 import styled from "@emotion/styled";
 
 export const ProjectModal = () => {

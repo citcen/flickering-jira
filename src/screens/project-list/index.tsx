@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import { useDebounce, useTitle } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { useProjects, useUsers } from "utils/use-api";
 import { useUrlQueryParam } from "utils/get-url-params";
@@ -22,7 +22,7 @@ export const ProjectListScreen = () => {
   const { data: users } = useUsers();
   const { open } = useProjectModal();
 
-  useTitle("项目列表", false);
+  useDocumentTitle("项目列表", false);
   return (
     <Container>
       <ListRow between={true}>

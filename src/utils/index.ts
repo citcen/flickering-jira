@@ -42,7 +42,7 @@ export const useDebounce = <D>(value: D, delay?: number) => {
 };
 
 // 页面title
-export const useTitle = (title: string, keepThisTitle = true) => {
+export const useDocumentTitle = (title: string, keepThisTitle = true) => {
   const oldTitle = useRef(document.title).current;
 
   useEffect(() => {
@@ -52,6 +52,7 @@ export const useTitle = (title: string, keepThisTitle = true) => {
   useEffect(() => {
     return () => {
       if (!keepThisTitle) {
+        // 如果不指定依赖，读到的就是旧title
         document.title = oldTitle;
       }
     };

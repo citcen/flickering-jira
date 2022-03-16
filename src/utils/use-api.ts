@@ -1,4 +1,4 @@
-/* 异步请求的统一 */
+/* project和user */
 import { Project } from "types/project";
 import { useHttp } from "./http";
 import { useQuery, useMutation, QueryKey } from "react-query";
