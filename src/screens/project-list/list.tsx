@@ -7,17 +7,9 @@ import { Pin } from "components/pin";
 import { useDeleteProject, useEditProject } from "utils/use-api";
 import { ButtonNoPadding } from "components/lib";
 import { useProjectModal, useProjectsQueryKey } from "./project-util";
+import { Project } from "types/project";
 
-export interface List {
-  id: number;
-  personId: number;
-  name: string;
-  organization: string;
-  creationTime: number;
-  pin: boolean;
-}
-
-interface ListProps extends TableProps<List> {
+interface ListProps extends TableProps<Project> {
   users: User[];
 }
 export const List = ({ users, ...props }: ListProps) => {
@@ -85,7 +77,7 @@ export const List = ({ users, ...props }: ListProps) => {
   );
 };
 
-const Operate = ({ project }: { project: List }) => {
+const Operate = ({ project }: { project: Project }) => {
   const { startEdit } = useProjectModal();
   const editProject = (id: number) => () => startEdit(id); // 编辑
   const { mutate: deleteProject } = useDeleteProject(useProjectsQueryKey());

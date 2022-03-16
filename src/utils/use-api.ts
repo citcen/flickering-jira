@@ -1,5 +1,5 @@
 /* 异步请求的统一 */
-import { List } from "screens/project-list/list";
+import { Project } from "types/project";
 import { useHttp } from "./http";
 import { useQuery, useMutation, QueryKey } from "react-query";
 import {
@@ -9,10 +9,10 @@ import {
 } from "./use-optimistic-updates";
 
 // 查询 projects
-export const useProjects = (param?: Partial<List>) => {
+export const useProjects = (param?: Partial<Project>) => {
   const pageReq = useHttp();
 
-  return useQuery<List[]>(["projects", param], () =>
+  return useQuery<Project[]>(["projects", param], () =>
     pageReq(
       `projects/${param?.personId ? param?.personId : "all"}/${
         param?.name ? param.name : "all"
@@ -31,7 +31,7 @@ export const useUsers = () => {
 export const useEditProject = (queryKey: QueryKey) => {
   const pageReq = useHttp();
   return useMutation(
-    (params: Partial<List>) =>
+    (params: Partial<Project>) =>
       pageReq(`projects/${params.id}`, {
         data: params,
         method: "PATCH",
@@ -59,7 +59,7 @@ export const useEditProject = (queryKey: QueryKey) => {
 export const useProjectDetail = (id?: number) => {
   const pageReq = useHttp();
 
-  return useQuery<List>(
+  return useQuery<Project>(
     ["projectDetail", { id }],
     () => pageReq(`projectDetail/${id}`),
     {
@@ -73,7 +73,7 @@ export const useAddProject = (queryKey: QueryKey) => {
   const pageReq = useHttp();
 
   return useMutation(
-    (params: Partial<List>) =>
+    (params: Partial<Project>) =>
       pageReq(`projects`, {
         data: params,
         method: "POST",

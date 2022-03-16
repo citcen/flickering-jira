@@ -1,9 +1,9 @@
 import { Form, Input, Select } from "antd";
-import { List } from "./list";
+import { Project } from "types/project";
 import { UserSelect } from "components/user-select";
 
 interface SearchPanelProps {
-  param: Partial<Pick<List, "personId" | "name">>;
+  param: Partial<Pick<Project, "personId" | "name">>;
   setParam: (param: SearchPanelProps["param"]) => void;
 }
 
