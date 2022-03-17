@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
 import { useProjectDetail } from "utils/use-api";
-import { useUrlQueryParam } from "../../utils/url-get-set";
+import { useUrlQueryParam } from "utils/url-get-set";
 import { useMemo } from "react";
 
 export const useProjectIdInUrl = () => {
@@ -12,7 +12,7 @@ export const useProjectIdInUrl = () => {
 // 当前项目
 export const useProjectInUrl = () => useProjectDetail(useProjectIdInUrl());
 
-const useKanbanSearchParams = () => ({ projectId: useProjectIdInUrl() });
+export const useKanbanSearchParams = () => ({ projectId: useProjectIdInUrl() });
 export const useKanbansQueryKey = () => ["kanbans", useKanbanSearchParams()];
 
 // 取url参数

@@ -17,7 +17,7 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   const { data: allTasks } = useTasks(useTasksSearchParams());
   const currentTasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
   return (
-    <Container>
+    <KanbanContainer>
       <h3>{kanban.name}</h3>
       <TasksContainer>
         {currentTasks?.map((task) => (
@@ -27,11 +27,11 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
           </Card>
         ))}
       </TasksContainer>
-    </Container>
+    </KanbanContainer>
   );
 };
 
-const Container = styled.div`
+export const KanbanContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 27rem;

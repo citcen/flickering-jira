@@ -16,6 +16,8 @@ const baseUrl = process.env.REACT_APP_API_URL;
 // 将初始化数据存入 window.localStorage
 window.localStorage.getItem("projectsData") ||
   window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
+window.localStorage.getItem("kanbansData") ||
+  window.localStorage.setItem("kanbansData", JSON.stringify(kanbansData));
 
 export const handlers = [
   rest.post(`${baseUrl}/login`, (req, res, ctx) => {
@@ -241,10 +243,13 @@ export const authHandlers = [
         })
       );
     }
+    const kanbansData = JSON.parse(
+      window.localStorage.getItem("kanbansData") || ""
+    );
     return res(ctx.status(200), ctx.json(kanbansData));
   }),
   // 查询看板任务
-  rest.get(`${baseUrl}/tasks`, (req, res, ctx) => {
+  rest.get(`${baseUrl}/tasks:params`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
         ctx.status(401),
@@ -266,5 +271,34 @@ export const authHandlers = [
       );
     }
     return res(ctx.status(200), ctx.json(taskTypesData));
+  }),
+  // 添加看板
+  rest.post(`${baseUrl}/kanbans`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const data = req.body as any;
+
+    if (data) {
+      let kanbansData = JSON.parse(
+        window.localStorage.getItem("kanbansData") || ""
+      );
+      kanbansData.push({ id: nanoid(), ...data });
+
+      window.localStorage.setItem("kanbansData", JSON.stringify(kanbansData));
+      return res(ctx.status(200), ctx.json(kanbansData));
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "操作失败",
+        })
+      );
+    }
   }),
 ];

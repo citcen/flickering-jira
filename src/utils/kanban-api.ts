@@ -8,8 +8,22 @@ import {
 import { Kanban } from "types/kanban";
 
 // 查询 看板
-export const useKanbans = () => {
+export const useKanbans = (param?: Partial<Kanban>) => {
   const pageReq = useHttp();
 
-  return useQuery<Kanban[]>(["kanbans"], () => pageReq(`kanbans`));
+  return useQuery<Kanban[]>(["kanbans", param], () => pageReq(`kanbans`));
+};
+
+// 添加 看板
+export const useAddKanban = (queryKey: QueryKey) => {
+  const pageReq = useHttp();
+
+  return useMutation(
+    (params: Partial<Kanban>) =>
+      pageReq(`kanbans`, {
+        data: params,
+        method: "POST",
+      }),
+    useAddConfig(queryKey)
+  );
 };

@@ -10,9 +10,10 @@ import { Task, TaskType } from "types/task";
 // 查询任务
 export const useTasks = (param?: Partial<Task>) => {
   const pageReq = useHttp();
+  console.log(param);
 
   return useQuery<Task[]>(["tasks", param], () =>
-    pageReq(`tasks/`, { data: param })
+    pageReq(`tasks${param ? null : "all"}`, { data: param })
   );
 };
 
