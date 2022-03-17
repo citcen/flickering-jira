@@ -8,3 +8,8 @@ export interface Task {
   typeId: number; // bug or task
   note: string;
 }
+
+export interface TaskType {
+  id: number;
+  name: string;
+}
