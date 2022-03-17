@@ -42,4 +42,4 @@ export const useEditConfig = (queryKey: QueryKey) =>
   );
 // 乐观更新的添加
 export const useAddConfig = (queryKey: QueryKey) =>
-  useQueryConfig(queryKey, (target, old) => (old ? [...old, ...target] : []));
+  useQueryConfig(queryKey, (target, old) => (old ? [...old, target] : []));
