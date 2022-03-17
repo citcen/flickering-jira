@@ -4,7 +4,7 @@ import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { useProjects, useUsers } from "utils/use-api";
-import { useUrlQueryParam } from "utils/get-url-params";
+import { useUrlQueryParam } from "utils/url-get-set";
 import { ButtonNoPadding, ErrorBox, ListRow } from "components/lib";
 import { useProjectModal } from "./project-util";
 

@@ -12,7 +12,7 @@ export const useTasks = (param?: Partial<Task>) => {
   const pageReq = useHttp();
 
   return useQuery<Task[]>(["tasks", param], () =>
-    pageReq(`tasks`, { data: param })
+    pageReq(`tasks/`, { data: param })
   );
 };
 

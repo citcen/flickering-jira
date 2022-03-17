@@ -1,4 +1,4 @@
-import { useSetUrlSearchParam, useUrlQueryParam } from "utils/get-url-params";
+import { useSetUrlSearchParam, useUrlQueryParam } from "utils/url-get-set";
 import { useProjectDetail } from "utils/use-api";
 import { useMemo } from "react";
 
