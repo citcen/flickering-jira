@@ -42,3 +42,11 @@ export const ErrorBox = ({ error }: { error: unknown }) => {
 
   return null;
 };
+
+// 默认padding和flex布局的container
+export const ScreenContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 3.2rem;
+  width: 100%;
+`;

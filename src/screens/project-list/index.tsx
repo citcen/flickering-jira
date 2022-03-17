@@ -2,10 +2,14 @@ import React, { useMemo } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
-import styled from "@emotion/styled";
 import { useProjects, useUsers } from "utils/use-api";
 import { useUrlQueryParam } from "utils/url-get-set";
-import { ButtonNoPadding, ErrorBox, ListRow } from "components/lib";
+import {
+  ButtonNoPadding,
+  ErrorBox,
+  ListRow,
+  ScreenContainer,
+} from "components/lib";
 import { useProjectModal } from "./project-util";
 
 export const ProjectListScreen = () => {
@@ -24,7 +28,7 @@ export const ProjectListScreen = () => {
 
   useDocumentTitle("项目列表", false);
   return (
-    <Container>
+    <ScreenContainer>
       <ListRow between={true}>
         <h1>项目列表</h1>
         <ButtonNoPadding type={"link"} onClick={open}>
@@ -36,12 +40,8 @@ export const ProjectListScreen = () => {
       <ErrorBox error={error} />
 
       <List loading={isLoading} users={users || []} dataSource={list || []} />
-    </Container>
+    </ScreenContainer>
   );
 };
 
 ProjectListScreen.whyDidYouRender = true;
-
-const Container = styled.div`
-  padding: 3.2rem;
-`;

@@ -79,14 +79,16 @@ const Container = styled.div`
 `;
 
 const Header = styled(ListRow)`
-  height: 6rem;
   padding: 3.2rem;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
 `;
 
 const HeaderLeft = styled(ListRow)``;
-
 const HeaderRight = styled.div``;
 
-const Main = styled.div``;
+const Main = styled.main`
+  display: flex;
+  height: 91vh;
+  overflow-x: auto;
+`;
