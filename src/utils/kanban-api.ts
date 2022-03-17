@@ -8,10 +8,8 @@ import {
 import { Kanban } from "types/kanban";
 
 // 查询 看板
-export const useKanbans = (param?: Partial<Kanban>) => {
+export const useKanbans = () => {
   const pageReq = useHttp();
 
-  return useQuery<Kanban[]>(["kanbans", param], () =>
-    pageReq(`kanbans/`, { data: param })
-  );
+  return useQuery<Kanban[]>(["kanbans"], () => pageReq(`kanbans`));
 };

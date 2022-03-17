@@ -8,24 +8,7 @@ import styled from "@emotion/styled";
 export const KanbanScreen = () => {
   useDocumentTitle("看板列表");
   const { data: currentProject } = useProjectInUrl();
-  const kanbans = [
-    {
-      name: "待完成",
-      id: 1,
-      projectId: 2,
-    },
-    {
-      name: "开发中",
-      id: 2,
-      projectId: 3,
-    },
-    {
-      name: "已完成",
-      id: 3,
-      projectId: 4,
-    },
-  ];
-  // const { data: kanbans } = useKanbans();
+  const { data: kanbans } = useKanbans();
   return (
     <div>
       <h1>{currentProject?.name}看板</h1>

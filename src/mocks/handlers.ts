@@ -2,85 +2,17 @@
 import { rest } from "msw";
 import { getToken } from "../auth-provider";
 import { nanoid } from "nanoid";
+import {
+  defaultProjectData,
+  kanbansData,
+  ProjectsData,
+  projectsData,
+  tasksData,
+  taskTypesData,
+  usersData,
+} from "./datas";
 const baseUrl = process.env.REACT_APP_API_URL;
-const usersData = [
-  {
-    id: 1,
-    name: "张三",
-  },
-  {
-    id: 2,
-    name: "李四",
-  },
-  {
-    id: 3,
-    name: "王五",
-  },
-  {
-    id: 4,
-    name: "赵六",
-  },
-];
-const projectsData = [
-  {
-    id: 1,
-    name: "骑手管理",
-    personId: 1,
-    organization: "外卖组",
-    creationTime: 1600229787312,
-    pin: false,
-  },
-  {
-    id: 2,
-    name: "团购APP",
-    personId: 2,
-    organization: "团购组",
-    creationTime: 1600229787312,
-    pin: false,
-  },
-  {
-    id: 3,
-    name: "物料管理系统",
-    personId: 3,
-    organization: "物料组",
-    creationTime: 1594500007512,
-    pin: true,
-  },
-  {
-    id: 4,
-    name: "总部管理系统",
-    personId: 4,
-    organization: "总部组",
-    creationTime: 16055729750002,
-    pin: true,
-  },
-  {
-    id: 5,
-    name: "送餐路线规划系统",
-    personId: 4,
-    organization: "送餐组",
-    creationTime: 16065729750002,
-    pin: true,
-  },
-];
 
-const defaultProjectData = {
-  id: nanoid(),
-  name: "",
-  personId: null,
-  organization: "",
-  creationTime: new Date().getTime(),
-  pin: false,
-};
-
-interface ProjectsData {
-  id: string;
-  name: string;
-  personId: string;
-  organization: string;
-  creationTime?: number;
-  pin: boolean;
-}
 // 将初始化数据存入 window.localStorage
 window.localStorage.getItem("projectsData") ||
   window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
@@ -134,6 +66,7 @@ export const handlers = [
 ];
 
 export const authHandlers = [
+  // 用户
   rest.get(`${baseUrl}/users?`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -145,8 +78,7 @@ export const authHandlers = [
     }
     return res(ctx.status(200), ctx.json(usersData));
   }),
-
-  // 修改
+  // 修改 project
   rest.patch(`${baseUrl}/projects/:id`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -156,9 +88,7 @@ export const authHandlers = [
         })
       );
     }
-
     const data = req.body as any;
-
     if (req.params?.id) {
       let projectsData = JSON.parse(
         window.localStorage.getItem("projectsData") || ""
@@ -169,13 +99,11 @@ export const authHandlers = [
           newData.push({ ...item, ...data });
         } else newData.push({ ...item });
       });
-
       const projectData = [
         projectsData.find(
           (item: ProjectsData) => String(item.id) === req.params?.id
         ),
       ];
-
       window.localStorage.setItem("projectsData", JSON.stringify(newData));
       return res(ctx.status(200), ctx.json(projectData));
     } else {
@@ -187,8 +115,7 @@ export const authHandlers = [
       );
     }
   }),
-
-  // 查询
+  // 查询 project
   rest.get(`${baseUrl}/projects/:personId/:name`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -219,8 +146,7 @@ export const authHandlers = [
     }
     return res(ctx.status(200), ctx.json([]));
   }),
-
-  // 查询详情
+  // 查询 project 详情
   rest.get(`${baseUrl}/projectDetail/:id`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -242,8 +168,7 @@ export const authHandlers = [
     }
     return res(ctx.status(200), ctx.json({}));
   }),
-
-  // 添加
+  // 添加 project
   rest.post(`${baseUrl}/projects`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -272,7 +197,7 @@ export const authHandlers = [
       );
     }
   }),
-  // 删除
+  // 删除 project
   rest.delete(`${baseUrl}/projects/:id`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
@@ -305,5 +230,41 @@ export const authHandlers = [
         })
       );
     }
+  }),
+  // 查询看板
+  rest.get(`${baseUrl}/kanbans`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    return res(ctx.status(200), ctx.json(kanbansData));
+  }),
+  // 查询看板任务
+  rest.get(`${baseUrl}/tasks`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    return res(ctx.status(200), ctx.json(tasksData));
+  }),
+  // 查询看板任务type
+  rest.get(`${baseUrl}/taskTypes`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    return res(ctx.status(200), ctx.json(taskTypesData));
   }),
 ];

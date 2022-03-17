@@ -17,10 +17,8 @@ export const useTasks = (param?: Partial<Task>) => {
 };
 
 // 查询任务type
-export const useTaskTypes = (param?: Partial<TaskType>) => {
+export const useTaskTypes = () => {
   const pageReq = useHttp();
 
-  return useQuery<TaskType[]>(["taskTypes"], () =>
-    pageReq(`taskTypes`, { data: param })
-  );
+  return useQuery<TaskType[]>(["taskTypes"], () => pageReq(`taskTypes`));
 };
