@@ -56,7 +56,7 @@ export const useEditProject = (queryKey: QueryKey) => {
 };
 
 // 查询project的详情
-export const useProjectDetail = (id?: number) => {
+export const useProjectDetail = (id?: number | string) => {
   const pageReq = useHttp();
 
   return useQuery<Project>(

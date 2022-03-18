@@ -4,6 +4,7 @@ import { getToken } from "../auth-provider";
 import { nanoid } from "nanoid";
 import {
   defaultProjectData,
+  defaultTasksData,
   kanbansData,
   ProjectsData,
   projectsData,
@@ -18,6 +19,8 @@ window.localStorage.getItem("projectsData") ||
   window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
 window.localStorage.getItem("kanbansData") ||
   window.localStorage.setItem("kanbansData", JSON.stringify(kanbansData));
+window.localStorage.getItem("tasksData") ||
+  window.localStorage.setItem("tasksData", JSON.stringify(tasksData));
 
 export const handlers = [
   rest.post(`${baseUrl}/login`, (req, res, ctx) => {
@@ -90,6 +93,7 @@ export const authHandlers = [
         })
       );
     }
+    debugger;
     const data = req.body as any;
     if (req.params?.id) {
       let projectsData = JSON.parse(
@@ -258,6 +262,9 @@ export const authHandlers = [
         })
       );
     }
+    const tasksData = JSON.parse(
+      window.localStorage.getItem("tasksData") || ""
+    );
     return res(ctx.status(200), ctx.json(tasksData));
   }),
   // 查询看板任务type
@@ -292,6 +299,38 @@ export const authHandlers = [
 
       window.localStorage.setItem("kanbansData", JSON.stringify(kanbansData));
       return res(ctx.status(200), ctx.json(kanbansData));
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "操作失败",
+        })
+      );
+    }
+  }),
+  // 添加任务
+  rest.post(`${baseUrl}/tasks`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const data = req.body as any;
+
+    if (data) {
+      let tasksData = JSON.parse(
+        window.localStorage.getItem("tasksData") || ""
+      );
+      tasksData.push({ ...defaultTasksData, ...data });
+
+      console.log(data, "data");
+      console.log(tasksData);
+
+      window.localStorage.setItem("tasksData", JSON.stringify(tasksData));
+      return res(ctx.status(200), ctx.json(tasksData));
     } else {
       return res(
         ctx.status(400),

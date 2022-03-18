@@ -18,9 +18,10 @@ export const useKanbansQueryKey = () => ["kanbans", useKanbanSearchParams()];
 // 取url参数
 export const useTasksSearchParams = () => {
   const [params] = useUrlQueryParam(["name", "typeId", "processorId", "tagId"]);
-
+  const projectId = useProjectIdInUrl();
   return useMemo(
     () => ({
+      projectId,
       typeId: Number(params.typeId) || undefined,
       processorId: Number(params.processorId) || undefined,
       tagId: Number(params.tagId) || undefined,

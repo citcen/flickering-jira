@@ -96,6 +96,16 @@ export const kanbansData = [
   },
 ];
 // 任务tasks
+export const defaultTasksData = {
+  name: undefined,
+  tags: [1, 2],
+  processorId: 1, // 经办人
+  epicId: 1, // 任务组
+  kanbanId: undefined,
+  favorite: true,
+  typeId: 1, // bug or task
+  note: undefined,
+};
 export const tasksData = [
   {
     name: "管理注册界面开发",
