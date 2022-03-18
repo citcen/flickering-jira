@@ -88,7 +88,8 @@ const HeaderLeft = styled(ListRow)``;
 const HeaderRight = styled.div``;
 
 const Main = styled.main`
-  display: flex;
-  height: 91vh;
+  margin-top: 0.5rem;
+  height: 110%;
+  box-sizing: border-box;
   overflow-x: auto;
 `;

@@ -30,9 +30,8 @@ export const useProjectModal = () => {
   ]);
   const setUrlParams = useSetUrlSearchParam();
 
-  const { data: projectEditing, isLoading } = useProjectDetail(
-    Number(projectEditingId)
-  );
+  const { data: projectEditing, isLoading } =
+    useProjectDetail(projectEditingId);
 
   const open = () => setProjectCreate({ projectCreate: true });
   const close = () => setUrlParams({ projectCreate: "", projectEditingId: "" });
