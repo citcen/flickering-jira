@@ -9,10 +9,10 @@ import styled from "@emotion/styled";
 
 export const ProjectModal = () => {
   const [form] = useForm();
-  const { projectModelOpen, close, projectEditing, isLoading } =
+  const { projectModelOpen, close, projectEditData, isLoading } =
     useProjectModal();
 
-  const useMutateProject = projectEditing ? useEditProject : useAddProject;
+  const useMutateProject = projectEditData ? useEditProject : useAddProject;
   const {
     mutateAsync,
     error,
@@ -20,7 +20,7 @@ export const ProjectModal = () => {
   } = useMutateProject(useProjectsQueryKey());
 
   const onFinish = (values: any) => {
-    mutateAsync({ ...projectEditing, ...values }).then(() => {
+    mutateAsync({ ...projectEditData, ...values }).then(() => {
       closeModal();
     });
   };
@@ -31,10 +31,10 @@ export const ProjectModal = () => {
   };
 
   useEffect(() => {
-    form.setFieldsValue(projectEditing);
-  }, [projectEditing, form]);
+    form.setFieldsValue(projectEditData);
+  }, [projectEditData, form]);
 
-  const title = projectEditing ? "编辑项目" : "新建项目";
+  const title = projectEditData ? "编辑项目" : "新建项目";
   return (
     <Drawer
       forceRender={true}

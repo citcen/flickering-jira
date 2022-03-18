@@ -13,6 +13,7 @@ import {
   usersData,
   TaskDataType,
 } from "./datas";
+import qs from "qs";
 const baseUrl = process.env.REACT_APP_API_URL;
 
 // 将初始化数据存入 window.localStorage
@@ -143,11 +144,14 @@ export const authHandlers = [
       ];
     }
     if (name !== "all") {
-      projectsData = [
+      projectsData = projectsData.filter(
+        (item: ProjectsDataType) => item.name.indexOf(name as string) > -1
+      );
+      /*projectsData = [
         projectsData.find(
           (item: ProjectsDataType) => String(item.name) === name
         ),
-      ];
+      ];*/
     }
     if (projectsData[0] !== undefined) {
       return res(ctx.status(200), ctx.json(projectsData));
@@ -255,7 +259,7 @@ export const authHandlers = [
     return res(ctx.status(200), ctx.json(kanbansData));
   }),
   // 查询看板任务
-  rest.get(`${baseUrl}/tasks:params`, (req, res, ctx) => {
+  rest.get(`${baseUrl}/tasks/:params`, (req, res, ctx) => {
     if (!getToken()) {
       return res(
         ctx.status(401),
@@ -264,10 +268,36 @@ export const authHandlers = [
         })
       );
     }
+
     const tasksData = JSON.parse(
       window.localStorage.getItem("tasksData") || ""
     );
-    return res(ctx.status(200), ctx.json(tasksData));
+    const { params } = req.params;
+    const objParams = qs.parse(params as string);
+
+    let searchData = tasksData;
+
+    if (objParams?.name) {
+      searchData = searchData.filter(
+        (item: TaskDataType) =>
+          item.name.indexOf(objParams?.name as string) > -1
+      );
+    }
+    if (objParams?.typeId) {
+      searchData = searchData.filter(
+        (item: TaskDataType) => String(item.typeId) === objParams.typeId
+      );
+    }
+    if (objParams?.processorId) {
+      searchData = searchData.filter(
+        (item: TaskDataType) =>
+          String(item.processorId) === objParams.processorId
+      );
+    }
+    /*for (let key in objParams) {
+    searchData = (key === "name") ? (searchData.filter((item: any) => (item[key]).indexOf(objParams[key] as string) > -1)) : (searchData.filter((item: any) => String(item[key]) === objParams[key]))
+    }*/
+    return res(ctx.status(200), ctx.json(searchData));
   }),
   // 查询看板任务type
   rest.get(`${baseUrl}/taskTypes`, (req, res, ctx) => {
@@ -327,9 +357,6 @@ export const authHandlers = [
         window.localStorage.getItem("tasksData") || ""
       );
       tasksData.push({ id: nanoid(), ...defaultTasksData, ...data });
-
-      console.log(data, "data");
-      console.log(tasksData);
 
       window.localStorage.setItem("tasksData", JSON.stringify(tasksData));
       return res(ctx.status(200), ctx.json(tasksData));

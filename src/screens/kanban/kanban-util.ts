@@ -2,8 +2,7 @@ import { useLocation } from "react-router";
 import { useProjectDetail } from "utils/use-api";
 import { useUrlQueryParam } from "utils/url-get-set";
 import { useCallback, useMemo } from "react";
-import { useTaskDetail } from "../../utils/task-api";
-import { useDebounce } from "../../utils";
+import { useTaskDetail } from "utils/task-api";
 
 export const useProjectIdInUrl = () => {
   const { pathname } = useLocation();
@@ -21,16 +20,16 @@ export const useKanbansQueryKey = () => ["kanbans", useKanbanSearchParams()];
 export const useTasksSearchParams = () => {
   const [params] = useUrlQueryParam(["name", "typeId", "processorId", "tagId"]);
   const projectId = useProjectIdInUrl();
-  const debounceName = useDebounce(params.name, 200);
+
   return useMemo(
     () => ({
       projectId,
       typeId: Number(params.typeId) || undefined,
       processorId: Number(params.processorId) || undefined,
       tagId: Number(params.tagId) || undefined,
-      name: debounceName,
+      name: params.name,
     }),
-    [params]
+    [projectId, params]
   );
 };
 export const useTasksQueryKey = () => ["tasks", useTasksSearchParams()];
@@ -52,7 +51,7 @@ export const useTaskModal = () => {
 
   const close = useCallback(() => {
     setTaskEditingId({ taskEditingId: "" });
-  }, []);
+  }, [setTaskEditingId]);
 
   return {
     taskEditingId,
