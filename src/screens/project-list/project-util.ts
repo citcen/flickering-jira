@@ -1,6 +1,6 @@
 import { useSetUrlSearchParam, useUrlQueryParam } from "utils/url-get-set";
 import { useProjectDetail } from "utils/use-api";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 // 项目列表搜索的参数
 export const useProjectsSearchParams = () => {
@@ -20,31 +20,34 @@ export const useProjectsQueryKey = () => {
   return ["projects", params];
 };
 
-// 新建项目页的state
+// 新建/编辑项目页的state
 export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
-    "projectCreate", // 是否创建的url参数
+    "projectCreate", // 是否创建
   ]);
   const [{ projectEditingId }, setProjectEditingId] = useUrlQueryParam([
-    "projectEditingId", // 是否在编辑的url参数
+    "projectEditingId", // 在编辑中的projectId
   ]);
   const setUrlParams = useSetUrlSearchParam();
 
-  const { data: projectEditing, isLoading } =
+  const { data: projectEditData, isLoading } =
     useProjectDetail(projectEditingId);
 
   const open = () => setProjectCreate({ projectCreate: true });
+
   const close = () => setUrlParams({ projectCreate: "", projectEditingId: "" });
 
-  const startEdit = (id: number) =>
-    setProjectEditingId({ projectEditingId: id });
+  const startEdit = useCallback(
+    (id: number | string) => setProjectEditingId({ projectEditingId: id }),
+    [setProjectEditingId]
+  );
 
   return {
     projectModelOpen: projectCreate === "true" || !!projectEditingId,
     open,
     close,
     startEdit,
-    projectEditing,
+    projectEditData: projectEditData,
     isLoading,
   };
 };
