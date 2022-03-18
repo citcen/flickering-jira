@@ -64,15 +64,14 @@ export const projectsData = [
   },
 ];
 export const defaultProjectData = {
-  id: nanoid(),
   name: "",
   personId: null,
   organization: "",
   creationTime: new Date().getTime(),
   pin: false,
 };
-export interface ProjectsData {
-  id: string;
+export interface ProjectsDataType {
+  id: string | number;
   name: string;
   personId: string;
   organization: string;
@@ -106,8 +105,20 @@ export const defaultTasksData = {
   typeId: 1, // bug or task
   note: undefined,
 };
+export interface TaskDataType {
+  id: number | string;
+  name: string;
+  tags: any[];
+  processorId: number; // 经办人
+  epicId: number; // 任务组
+  kanbanId: number;
+  favorite: boolean;
+  typeId: number; // bug or task
+  note: string;
+}
 export const tasksData = [
   {
+    id: nanoid(),
     name: "管理注册界面开发",
     tags: [1, 2],
     reporterId: 1,
@@ -119,6 +130,7 @@ export const tasksData = [
     note: "请尽快完成",
   },
   {
+    id: nanoid(),
     name: "管理登录界面开发",
     tags: [2],
     reporterId: 1,
@@ -130,6 +142,7 @@ export const tasksData = [
     note: "请使用JWT完成",
   },
   {
+    id: nanoid(),
     name: "单元测试",
     tags: [1],
     reporterId: 1,
@@ -141,6 +154,7 @@ export const tasksData = [
     note: "",
   },
   {
+    id: nanoid(),
     name: "性能优化",
     tags: [1],
     reporterId: 1,
@@ -152,6 +166,7 @@ export const tasksData = [
     note: "",
   },
   {
+    id: nanoid(),
     name: "权限管理界面开发",
     tags: [1],
     reporterId: 1,
@@ -163,6 +178,7 @@ export const tasksData = [
     note: "",
   },
   {
+    id: nanoid(),
     name: "UI开发",
     tags: [1],
     reporterId: 1,
@@ -174,6 +190,7 @@ export const tasksData = [
     note: "",
   },
   {
+    id: nanoid(),
     name: "自测",
     tags: [1],
     reporterId: 1,

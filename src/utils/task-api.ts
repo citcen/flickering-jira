@@ -36,3 +36,29 @@ export const useAddTask = (queryKey: QueryKey) => {
     useAddConfig(queryKey)
   );
 };
+
+// 查询task详情
+export const useTaskDetail = (id?: number | string) => {
+  const pageReq = useHttp();
+
+  return useQuery<Task>(
+    ["taskDetail", { id }],
+    () => pageReq(`taskDetail/${id}`),
+    {
+      enabled: !!id, // id 有值的时候才查询
+    }
+  );
+};
+
+// 修改 task
+export const useEditTask = (queryKey: QueryKey) => {
+  const pageReq = useHttp();
+  return useMutation(
+    (params: Partial<Task>) =>
+      pageReq(`tasks/${params.id}`, {
+        data: params,
+        method: "PATCH",
+      }),
+    useEditConfig(queryKey)
+  );
+};

@@ -6,11 +6,12 @@ import {
   defaultProjectData,
   defaultTasksData,
   kanbansData,
-  ProjectsData,
+  ProjectsDataType,
   projectsData,
   tasksData,
   taskTypesData,
   usersData,
+  TaskDataType,
 } from "./datas";
 const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -93,21 +94,20 @@ export const authHandlers = [
         })
       );
     }
-    debugger;
     const data = req.body as any;
     if (req.params?.id) {
       let projectsData = JSON.parse(
         window.localStorage.getItem("projectsData") || ""
       );
       let newData: any = [];
-      projectsData.map((item: ProjectsData) => {
+      projectsData.map((item: ProjectsDataType) => {
         if (String(item.id) === req.params.id) {
           newData.push({ ...item, ...data });
         } else newData.push({ ...item });
       });
       const projectData = [
         projectsData.find(
-          (item: ProjectsData) => String(item.id) === req.params?.id
+          (item: ProjectsDataType) => String(item.id) === req.params?.id
         ),
       ];
       window.localStorage.setItem("projectsData", JSON.stringify(newData));
@@ -138,13 +138,15 @@ export const authHandlers = [
     if (personId !== "all") {
       projectsData = [
         projectsData.find(
-          (item: ProjectsData) => String(item.personId) === personId
+          (item: ProjectsDataType) => String(item.personId) === personId
         ),
       ];
     }
     if (name !== "all") {
       projectsData = [
-        projectsData.find((item: ProjectsData) => String(item.name) === name),
+        projectsData.find(
+          (item: ProjectsDataType) => String(item.name) === name
+        ),
       ];
     }
     if (projectsData[0] !== undefined) {
@@ -167,7 +169,7 @@ export const authHandlers = [
       window.localStorage.getItem("projectsData") || ""
     );
     projectsData = [
-      projectsData.find((item: ProjectsData) => String(item.id) === id),
+      projectsData.find((item: ProjectsDataType) => String(item.id) === id),
     ];
     if (projectsData[0] !== undefined) {
       return res(ctx.status(200), ctx.json(projectsData[0]));
@@ -190,7 +192,7 @@ export const authHandlers = [
       let projectsData = JSON.parse(
         window.localStorage.getItem("projectsData") || ""
       );
-      projectsData.push({ ...defaultProjectData, ...data });
+      projectsData.push({ id: nanoid(), ...defaultProjectData, ...data });
 
       window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
       return res(ctx.status(200), ctx.json(projectsData));
@@ -218,7 +220,7 @@ export const authHandlers = [
       window.localStorage.getItem("projectsData") || ""
     );
     projectsData = projectsData.filter(
-      (item: ProjectsData) => String(item.id) !== id
+      (item: ProjectsDataType) => String(item.id) !== id
     );
     if (projectsData) {
       window.localStorage.setItem("projectsData", JSON.stringify(projectsData));
@@ -324,13 +326,70 @@ export const authHandlers = [
       let tasksData = JSON.parse(
         window.localStorage.getItem("tasksData") || ""
       );
-      tasksData.push({ ...defaultTasksData, ...data });
+      tasksData.push({ id: nanoid(), ...defaultTasksData, ...data });
 
       console.log(data, "data");
       console.log(tasksData);
 
       window.localStorage.setItem("tasksData", JSON.stringify(tasksData));
       return res(ctx.status(200), ctx.json(tasksData));
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "操作失败",
+        })
+      );
+    }
+  }),
+  // 查询 task 详情
+  rest.get(`${baseUrl}/taskDetail/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const { id } = req.params;
+    let tasksData = JSON.parse(window.localStorage.getItem("tasksData") || "");
+    tasksData = [
+      tasksData.find((item: TaskDataType) => String(item.id) === id),
+    ];
+    if (tasksData[0] !== undefined) {
+      return res(ctx.status(200), ctx.json(tasksData[0]));
+    }
+    return res(ctx.status(200), ctx.json({}));
+  }),
+  // 修改 task
+  rest.patch(`${baseUrl}/tasks/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const data = req.body as any;
+    if (req.params?.id) {
+      let tasksData = JSON.parse(
+        window.localStorage.getItem("tasksData") || ""
+      );
+      let newData: any = [];
+      tasksData.map((item: TaskDataType) => {
+        if (String(item.id) === req.params.id) {
+          newData.push({ ...item, ...data });
+        } else newData.push({ ...item });
+      });
+      const taskData = [
+        tasksData.find(
+          (item: TaskDataType) => String(item.id) === req.params?.id
+        ),
+      ];
+      window.localStorage.setItem("tasksData", JSON.stringify(newData));
+      return res(ctx.status(200), ctx.json(taskData));
     } else {
       return res(
         ctx.status(400),

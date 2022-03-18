@@ -4,7 +4,7 @@ import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import styled from "@emotion/styled";
 import { Card } from "antd";
-import { useTasksSearchParams } from "./kanban-util";
+import { useTaskModal, useTasksSearchParams } from "./kanban-util";
 import { CreateTask } from "./create-task";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -17,12 +17,18 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   const { data: allTasks } = useTasks(useTasksSearchParams());
   const currentTasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
+
+  const { startEdit } = useTaskModal();
   return (
     <KanbanContainer>
       <h3>{kanban.name}</h3>
       <TasksContainer>
         {currentTasks?.map((task) => (
-          <Card style={{ marginBottom: ".5rem" }} key={task.name}>
+          <Card
+            onClick={() => startEdit(task.id)}
+            style={{ marginBottom: ".5rem", cursor: "pointer" }}
+            key={task.name}
+          >
             <div>{task.name}</div>
             <TaskTypeIcon id={task.typeId} />
           </Card>
