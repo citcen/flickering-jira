@@ -1,6 +1,6 @@
 // src/mocks/handlers.js
 import { rest } from "msw";
-import { getToken } from "../auth-provider";
+import { getToken } from "auth-provider";
 import { nanoid } from "nanoid";
 import {
   defaultProjectData,
@@ -12,6 +12,7 @@ import {
   taskTypesData,
   usersData,
   TaskDataType,
+  KanbansDataType,
 } from "./datas";
 import qs from "qs";
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -257,6 +258,41 @@ export const authHandlers = [
       window.localStorage.getItem("kanbansData") || ""
     );
     return res(ctx.status(200), ctx.json(kanbansData));
+  }),
+  // 删除看板
+  rest.delete(`${baseUrl}/kanbans/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const { id } = req.params;
+    let kanbansData = JSON.parse(
+      window.localStorage.getItem("kanbansData") || ""
+    );
+    kanbansData = kanbansData.filter(
+      (item: KanbansDataType) => String(item.id) !== id
+    );
+    console.log(kanbansData, "kanbansData");
+    if (kanbansData) {
+      window.localStorage.setItem("kanbansData", JSON.stringify(kanbansData));
+      return res(
+        ctx.status(200),
+        ctx.json({
+          message: "删除成功",
+        })
+      );
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "删除失败",
+        })
+      );
+    }
   }),
   // 查询看板任务
   rest.get(`${baseUrl}/tasks/:params`, (req, res, ctx) => {

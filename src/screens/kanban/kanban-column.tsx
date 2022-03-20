@@ -3,11 +3,17 @@ import { useTasks, useTaskTypes } from "utils/task-api";
 import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import styled from "@emotion/styled";
-import { Card } from "antd";
-import { useTaskModal, useTasksSearchParams } from "./kanban-util";
+import { Button, Card, Dropdown, Menu, Modal } from "antd";
+import {
+  useKanbansQueryKey,
+  useTaskModal,
+  useTasksSearchParams,
+} from "./kanban-util";
 import { CreateTask } from "./create-task";
 import { Task } from "types/task";
 import { Mark } from "components/mark";
+import { useDeleteKankan } from "utils/kanban-api";
+import { ListRow } from "components/lib";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: taskTypes } = useTaskTypes();
@@ -37,14 +43,47 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
 
   return (
     <KanbanContainer>
-      <h3>{kanban.name}</h3>
+      <ListRow between={true}>
+        <h3>{kanban.name}</h3>
+        <More kanban={kanban} />
+      </ListRow>
       <TasksContainer>
         {currentTasks?.map((task) => (
-          <TaskCard task={task} />
+          <TaskCard task={task} key={task.id} />
         ))}
         <CreateTask kanbanId={kanban.id} />
       </TasksContainer>
     </KanbanContainer>
+  );
+};
+
+// 更多功能(删除看板)
+const More = ({ kanban }: { kanban: Kanban }) => {
+  const { mutateAsync } = useDeleteKankan(useKanbansQueryKey());
+  const confirmDelete = () => {
+    Modal.confirm({
+      okText: "确定",
+      cancelText: "取消",
+      title: "确定删除此看板吗？",
+      onOk() {
+        return mutateAsync({ id: kanban.id });
+      },
+    });
+  };
+  const overlay = (
+    <Menu>
+      <Menu.Item key={"deleteKanban"}>
+        <Button onClick={confirmDelete} type={"link"}>
+          删除
+        </Button>
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <Dropdown overlay={overlay}>
+      <Button type={"link"}>...</Button>
+    </Dropdown>
   );
 };
 

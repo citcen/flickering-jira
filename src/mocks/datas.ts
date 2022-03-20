@@ -94,6 +94,10 @@ export const kanbansData = [
     id: 3,
   },
 ];
+export interface KanbansDataType {
+  id: string | number;
+  name: string;
+}
 // 任务tasks
 export const defaultTasksData = {
   name: undefined,
