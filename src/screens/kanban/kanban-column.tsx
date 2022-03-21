@@ -1,3 +1,4 @@
+import React from "react";
 import { Kanban } from "types/kanban";
 import { useTasks, useTaskTypes } from "utils/task-api";
 import taskIcon from "assets/task.svg";
@@ -37,15 +38,18 @@ const TaskCard = ({ task }: { task: Task }) => {
   );
 };
 
-export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
+export const KanbanColumn = React.forwardRef<
+  HTMLDivElement,
+  { kanban: Kanban }
+>(({ kanban, ...props }, ref) => {
   const { data: allTasks } = useTasks(useTasksSearchParams());
   const currentTasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
 
   return (
-    <KanbanContainer>
+    <KanbanContainer {...props} ref={ref}>
       <ListRow between={true}>
         <h3>{kanban.name}</h3>
-        <More kanban={kanban} />
+        <More kanban={kanban} key={kanban.id} />
       </ListRow>
       <TasksContainer>
         {currentTasks?.map((task) => (
@@ -55,7 +59,7 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
       </TasksContainer>
     </KanbanContainer>
   );
-};
+});
 
 // 更多功能(删除看板)
 const More = ({ kanban }: { kanban: Kanban }) => {
