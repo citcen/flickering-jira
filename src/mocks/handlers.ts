@@ -276,7 +276,6 @@ export const authHandlers = [
     kanbansData = kanbansData.filter(
       (item: KanbansDataType) => String(item.id) !== id
     );
-    console.log(kanbansData, "kanbansData");
     if (kanbansData) {
       window.localStorage.setItem("kanbansData", JSON.stringify(kanbansData));
       return res(
@@ -458,6 +457,38 @@ export const authHandlers = [
         ctx.status(400),
         ctx.json({
           message: "操作失败",
+        })
+      );
+    }
+  }),
+  // 删除看板
+  rest.delete(`${baseUrl}/tasks/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const { id } = req.params;
+    let tasksData = JSON.parse(window.localStorage.getItem("tasksData") || "");
+    tasksData = tasksData.filter(
+      (item: TaskDataType) => String(item.id) !== id
+    );
+    if (tasksData) {
+      window.localStorage.setItem("tasksData", JSON.stringify(tasksData));
+      return res(
+        ctx.status(200),
+        ctx.json({
+          message: "删除成功",
+        })
+      );
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "删除失败",
         })
       );
     }

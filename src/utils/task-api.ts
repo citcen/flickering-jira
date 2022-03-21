@@ -62,3 +62,16 @@ export const useEditTask = (queryKey: QueryKey) => {
     useEditConfig(queryKey)
   );
 };
+
+// 删除task
+export const useDeleteTask = (queryKey: QueryKey) => {
+  const pageReq = useHttp();
+
+  return useMutation(
+    ({ id }: { id: number | string }) =>
+      pageReq(`tasks/${id}`, {
+        method: "DELETE",
+      }),
+    useDeleteConfig(queryKey)
+  );
+};
