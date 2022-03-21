@@ -493,4 +493,148 @@ export const authHandlers = [
       );
     }
   }),
+  // 看板排序
+  rest.post(`${baseUrl}/kanbans/reorder`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const data = req.body as any;
+    const fromId = data.fromId,
+      type = data.type,
+      referenceId = data.referenceId;
+    const kanbansData = JSON.parse(
+      window.localStorage.getItem("kanbansData") || ""
+    );
+
+    const movingItemIndex = kanbansData.findIndex(function (
+      item: KanbansDataType
+    ) {
+      return item.id === fromId;
+    });
+
+    if (!referenceId) {
+      const data = insertAfter(
+        kanbansData,
+        movingItemIndex,
+        kanbansData.length - 1
+      );
+      window.localStorage.setItem("kanbansData", JSON.stringify(data));
+      return res(
+        ctx.status(200),
+        ctx.json({
+          message: "操作成功",
+        })
+      );
+    }
+
+    const targetIndex = kanbansData.findIndex(function (item: KanbansDataType) {
+      return item.id === referenceId;
+    });
+    const insert = type === "after" ? insertAfter : insertBefore;
+    const newData = insert(kanbansData, movingItemIndex, targetIndex);
+    window.localStorage.setItem("kanbansData", JSON.stringify(newData));
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        message: "操作成功",
+      })
+    );
+  }),
+  // task排序
+  rest.post(`${baseUrl}/tasks/reorder`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const data = req.body as any;
+    const fromId = data.fromId,
+      type = data.type,
+      referenceId = data.referenceId,
+      fromKanbanId = data.fromKanbanId,
+      toKanbanId = data.toKanbanId;
+    const tasksData = JSON.parse(
+      window.localStorage.getItem("tasksData") || ""
+    );
+
+    const movingItemIndex = tasksData.findIndex(function (item: TaskDataType) {
+      return item.id === fromId;
+    });
+
+    if (!referenceId) {
+      const data = insertAfter(
+        tasksData,
+        movingItemIndex,
+        tasksData.length - 1
+      );
+      if (fromKanbanId !== toKanbanId) {
+        data.forEach((item: TaskDataType) => {
+          if (
+            item.id === fromId &&
+            String(item.kanbanId) === String(fromKanbanId)
+          ) {
+            item.kanbanId = toKanbanId;
+          }
+        });
+      }
+      window.localStorage.setItem("tasksData", JSON.stringify(data));
+      return res(
+        ctx.status(200),
+        ctx.json({
+          message: "操作成功",
+        })
+      );
+    }
+
+    const targetIndex = tasksData.findIndex(function (item: TaskDataType) {
+      return item.id === referenceId;
+    });
+    const insert = type === "after" ? insertAfter : insertBefore;
+    const sortData = insert(tasksData, movingItemIndex, targetIndex);
+
+    if (fromKanbanId !== toKanbanId) {
+      sortData.forEach((item: TaskDataType) => {
+        if (
+          item.id === fromId &&
+          String(item.kanbanId) === String(fromKanbanId)
+        ) {
+          item.kanbanId = toKanbanId;
+        }
+      });
+    }
+
+    window.localStorage.setItem("tasksData", JSON.stringify(sortData));
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        message: "操作成功",
+      })
+    );
+  }),
 ];
+
+const insertAfter = (list: any[], from: number, to: number) => {
+  const toItem = list[to];
+  const removedItem = list.splice(from, 1)[0];
+  const toIndex = list.indexOf(toItem);
+  list.splice(toIndex + 1, 0, removedItem);
+  return list;
+};
+
+const insertBefore = (list: any[], from: number, to: number) => {
+  const toItem = list[to];
+  const removedItem = list.splice(from, 1)[0];
+  const toIndex = list.indexOf(toItem);
+  list.splice(toIndex, 0, removedItem);
+  return list;
+};

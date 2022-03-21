@@ -43,3 +43,6 @@ export const useEditConfig = (queryKey: QueryKey) =>
 // 乐观更新的添加
 export const useAddConfig = (queryKey: QueryKey) =>
   useQueryConfig(queryKey, (target, old) => (old ? [...old, target] : []));
+// 排序
+export const useReorderConfig = (queryKey: QueryKey) =>
+  useQueryConfig(queryKey, (target, old) => old || []);

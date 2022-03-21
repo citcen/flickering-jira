@@ -3,9 +3,10 @@ import { useQuery, useMutation, QueryKey } from "react-query";
 import {
   useAddConfig,
   useDeleteConfig,
-  useEditConfig,
+  useReorderConfig,
 } from "./use-optimistic-updates";
 import { Kanban } from "types/kanban";
+import { SortProps } from "types/sort";
 
 // 查询 看板
 export const useKanbans = (param?: Partial<Kanban>) => {
@@ -39,4 +40,16 @@ export const useDeleteKankan = (queryKey: QueryKey) => {
       }),
     useDeleteConfig(queryKey)
   );
+};
+
+// kanban排序
+export const useReorderKanban = (queryKey: QueryKey) => {
+  const pageReq = useHttp();
+
+  return useMutation((params: SortProps) => {
+    return pageReq("kanbans/reorder", {
+      data: params,
+      method: "POST",
+    });
+  }, useReorderConfig(queryKey));
 };

@@ -4,8 +4,10 @@ import {
   useAddConfig,
   useDeleteConfig,
   useEditConfig,
+  useReorderConfig,
 } from "./use-optimistic-updates";
 import { Task, TaskType } from "types/task";
+import { SortProps } from "types/sort";
 
 // 查询任务
 export const useTasks = (param?: Partial<Task>) => {
@@ -74,4 +76,16 @@ export const useDeleteTask = (queryKey: QueryKey) => {
       }),
     useDeleteConfig(queryKey)
   );
+};
+
+// task排序
+export const useReorderTask = (queryKey: QueryKey) => {
+  const pageReq = useHttp();
+
+  return useMutation((params: SortProps) => {
+    return pageReq("tasks/reorder", {
+      data: params,
+      method: "POST",
+    });
+  }, useReorderConfig(queryKey));
 };
