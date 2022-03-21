@@ -59,14 +59,14 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
 
 // 更多功能(删除看板)
 const More = ({ kanban }: { kanban: Kanban }) => {
-  const { mutateAsync } = useDeleteKankan(useKanbansQueryKey());
+  const { mutateAsync: deleteKanban } = useDeleteKankan(useKanbansQueryKey());
   const confirmDelete = () => {
     Modal.confirm({
       okText: "确定",
       cancelText: "取消",
       title: "确定删除此看板吗？",
       onOk() {
-        return mutateAsync({ id: kanban.id });
+        return deleteKanban({ id: kanban.id });
       },
     });
   };

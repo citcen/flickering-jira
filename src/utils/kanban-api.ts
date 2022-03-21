@@ -33,7 +33,7 @@ export const useDeleteKankan = (queryKey: QueryKey) => {
   const pageReq = useHttp();
 
   return useMutation(
-    ({ id }: { id: number }) =>
+    ({ id }: { id: number | string }) =>
       pageReq(`kanbans/${id}`, {
         method: "DELETE",
       }),
