@@ -1,7 +1,8 @@
 import { useHttp } from "./http";
 import { useQuery, useMutation, QueryKey } from "react-query";
-import { useDeleteConfig } from "./use-optimistic-updates";
+import { useAddConfig, useDeleteConfig } from "./use-optimistic-updates";
 import { TaskGroup } from "types/task-group";
+import { Kanban } from "../types/kanban";
 
 // 查询 任务组
 export const useTaskGroup = (param?: Partial<TaskGroup>) => {
@@ -22,5 +23,19 @@ export const useDeleteTaskGroup = (queryKey: QueryKey) => {
         method: "DELETE",
       }),
     useDeleteConfig(queryKey)
+  );
+};
+
+// 添加 看板
+export const useAddTaskGroup = (queryKey: QueryKey) => {
+  const pageReq = useHttp();
+
+  return useMutation(
+    (params: Partial<Kanban>) =>
+      pageReq(`taskGroup`, {
+        data: params,
+        method: "POST",
+      }),
+    useAddConfig(queryKey)
   );
 };

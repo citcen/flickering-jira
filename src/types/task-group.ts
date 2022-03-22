@@ -1,5 +1,5 @@
 export interface TaskGroup {
-  id: number;
+  id: number | string;
   name: string;
   projectId: number;
   startTime: number;

@@ -675,4 +675,33 @@ export const authHandlers = [
       );
     }
   }),
+  // 添加看板
+  rest.post(`${baseUrl}/taskGroup`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const data = req.body as any;
+
+    if (data) {
+      let taskGroup = JSON.parse(
+        window.localStorage.getItem("taskGroupData") || ""
+      );
+      taskGroup.push({ id: nanoid(), ...data });
+
+      window.localStorage.setItem("taskGroupData", JSON.stringify(taskGroup));
+      return res(ctx.status(200), ctx.json(taskGroup));
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "操作失败",
+        })
+      );
+    }
+  }),
 ];
