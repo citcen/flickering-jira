@@ -1,7 +1,7 @@
 // 全局状态
 import React, { ReactNode, useContext, useState } from "react";
 import * as auth from "auth-provider";
-import { useMount } from "../utils";
+import { useMount } from "utils";
 import { getUser } from "auth-provider";
 import { User } from "types/user";
 

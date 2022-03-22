@@ -3,8 +3,8 @@ import { useForm } from "antd/es/form/Form";
 import { useDeleteTask, useEditTask } from "utils/task-api";
 import { useEffect } from "react";
 import { Button, Form, Input, Modal, Spin } from "antd";
-import { UserSelect } from "../../components/user-select";
-import { TaskTypeSelect } from "../../components/task-type-select";
+import { UserSelect } from "components/user-select";
+import { TaskTypeSelect } from "components/task-type-select";
 
 const layout = {
   labelCol: { span: 8 },
