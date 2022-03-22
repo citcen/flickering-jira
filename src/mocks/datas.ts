@@ -220,27 +220,27 @@ export const taskTypesData = [
 // task-group
 export const taskGroupData = [
   {
-    end: 1620323200000,
+    endTime: 1650323200000,
     id: 1,
     name: "骑手物料表单开发",
     ownerId: 193359092,
     projectId: 1,
-    start: 1617558400000,
+    startTime: 1627558400000,
   },
   {
-    end: 1621260800000,
+    endTime: 1651260800000,
     id: 2,
     name: "骑手地图开发",
     ownerId: 193359092,
     projectId: 1,
-    start: 1618409600000,
+    startTime: 1638409600000,
   },
   {
-    end: 1613260800000,
+    endTime: 1643460800000,
     id: 3,
     name: "骑手最优路线开发",
     ownerId: 193359092,
     projectId: 1,
-    start: 1610409600000,
+    startTime: 1630409600000,
   },
 ];

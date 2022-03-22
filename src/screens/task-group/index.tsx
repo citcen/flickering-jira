@@ -30,7 +30,7 @@ export const TaskGroupScreen = () => {
               description={
                 <div>
                   <p>开始时间：{dayjs(item.startTime).format("YYYY-MM-DD")}</p>
-                  <p>开始时间：{dayjs(item.endTime).format("YYYY-MM-DD")}</p>
+                  <p>结束时间：{dayjs(item.endTime).format("YYYY-MM-DD")}</p>
                 </div>
               }
             />
