@@ -84,16 +84,14 @@ export const useDragEnd = () => {
       }
       // task 排序
       if (type === "TASK") {
-        debugger;
-        const fromKanbanId = +source.droppableId;
-        const toKanbanId = +destination.droppableId;
-        // if (fromKanbanId !== toKanbanId) return;
-        const fromTask = tasks.filter((task) => task.kanbanId === fromKanbanId)[
-          source.index
-        ];
-        const toTask = tasks.filter((task) => task.kanbanId === toKanbanId)[
-          destination.index
-        ];
+        const fromKanbanId = source.droppableId;
+        const toKanbanId = destination.droppableId;
+        const fromTask = tasks.filter(
+          (task) => String(task.kanbanId) === String(fromKanbanId)
+        )[source.index];
+        const toTask = tasks.filter(
+          (task) => String(task.kanbanId) === String(toKanbanId)
+        )[destination.index];
         if (fromTask?.id === toTask?.id) return;
         reorederTask({
           fromId: fromTask?.id,
@@ -115,4 +113,5 @@ const ColumnsContainer = styled.div`
   display: flex;
   flex: 1;
   overflow-x: scroll;
+  max-height: 400px;
 `;

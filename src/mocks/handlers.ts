@@ -15,6 +15,7 @@ import {
   KanbansDataType,
 } from "./datas";
 import qs from "qs";
+import { insertAfter, insertBefore } from "../utils/reorder";
 const baseUrl = process.env.REACT_APP_API_URL;
 
 // 将初始化数据存入 window.localStorage
@@ -622,19 +623,3 @@ export const authHandlers = [
     );
   }),
 ];
-
-const insertAfter = (list: any[], from: number, to: number) => {
-  const toItem = list[to];
-  const removedItem = list.splice(from, 1)[0];
-  const toIndex = list.indexOf(toItem);
-  list.splice(toIndex + 1, 0, removedItem);
-  return list;
-};
-
-const insertBefore = (list: any[], from: number, to: number) => {
-  const toItem = list[to];
-  const removedItem = list.splice(from, 1)[0];
-  const toIndex = list.indexOf(toItem);
-  list.splice(toIndex, 0, removedItem);
-  return list;
-};

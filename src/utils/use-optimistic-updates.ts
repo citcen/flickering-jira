@@ -1,4 +1,6 @@
 import { QueryKey, useQueryClient } from "react-query";
+import { reorder } from "./reorder";
+import { Task } from "types/task";
 
 // 生成react-query的配置，（请求成功、失败、乐观更新）
 export const useQueryConfig = (
@@ -43,6 +45,16 @@ export const useEditConfig = (queryKey: QueryKey) =>
 // 乐观更新的添加
 export const useAddConfig = (queryKey: QueryKey) =>
   useQueryConfig(queryKey, (target, old) => (old ? [...old, target] : []));
-// 排序
-export const useReorderConfig = (queryKey: QueryKey) =>
-  useQueryConfig(queryKey, (target, old) => old || []);
+// kanban排序的乐观更新
+export const useReorderKanbanConfig = (queryKey: QueryKey) =>
+  useQueryConfig(queryKey, (target, old) => reorder({ list: old, ...target }));
+// task排序的乐观更新
+export const useReorderTaskConfig = (queryKey: QueryKey) =>
+  useQueryConfig(queryKey, (target, old) => {
+    const orderedList = reorder({ list: old, ...target }) as Task[];
+    return orderedList.map((item) =>
+      item.id === target.fromId
+        ? { ...item, kanbanId: target.toKanbanId }
+        : item
+    );
+  });
