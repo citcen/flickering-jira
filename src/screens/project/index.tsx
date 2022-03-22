@@ -28,6 +28,7 @@ export const ProjectScreen = () => {
         <Routes>
           <Route path={"kanban"} element={<KanbanScreen />} />
           <Route path={"taskGroup"} element={<TaskGroupScreen />} />
+          {/*// <Route index element={<KanbanScreen />} />*/}
           <Route
             path={"/"}
             element={

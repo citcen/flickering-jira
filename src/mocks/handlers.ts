@@ -13,6 +13,7 @@ import {
   usersData,
   TaskDataType,
   KanbansDataType,
+  taskGroupData,
 } from "./datas";
 import qs from "qs";
 import { insertAfter, insertBefore } from "../utils/reorder";
@@ -25,6 +26,8 @@ window.localStorage.getItem("kanbansData") ||
   window.localStorage.setItem("kanbansData", JSON.stringify(kanbansData));
 window.localStorage.getItem("tasksData") ||
   window.localStorage.setItem("tasksData", JSON.stringify(tasksData));
+window.localStorage.getItem("taskGroupData") ||
+  window.localStorage.setItem("taskGroupData", JSON.stringify(taskGroupData));
 
 export const handlers = [
   rest.post(`${baseUrl}/login`, (req, res, ctx) => {
@@ -621,5 +624,20 @@ export const authHandlers = [
         message: "操作成功",
       })
     );
+  }),
+  // 查询task-group
+  rest.get(`${baseUrl}/taskGroup`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const taskGroupData = JSON.parse(
+      window.localStorage.getItem("taskGroupData") || ""
+    );
+    return res(ctx.status(200), ctx.json(taskGroupData));
   }),
 ];

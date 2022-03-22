@@ -103,7 +103,7 @@ export const defaultTasksData = {
   name: undefined,
   tags: [1, 2],
   processorId: 1, // 经办人
-  epicId: 1, // 任务组
+  groupId: 1, // 任务组
   kanbanId: undefined,
   favorite: true,
   typeId: 1, // bug or task
@@ -114,7 +114,7 @@ export interface TaskDataType {
   name: string;
   tags: any[];
   processorId: number; // 经办人
-  epicId: number; // 任务组
+  groupId: number; // 任务组
   kanbanId: number;
   favorite: boolean;
   typeId: number; // bug or task
@@ -127,7 +127,7 @@ export const tasksData = [
     tags: [1, 2],
     reporterId: 1,
     processorId: 3,
-    epicId: 1,
+    groupId: 1,
     kanbanId: 1,
     favorite: true,
     typeId: 2,
@@ -139,7 +139,7 @@ export const tasksData = [
     tags: [2],
     reporterId: 1,
     processorId: 4,
-    epicId: 1,
+    groupId: 1,
     kanbanId: 2,
     favorite: true,
     typeId: 2,
@@ -151,7 +151,7 @@ export const tasksData = [
     tags: [1],
     reporterId: 1,
     processorId: 4,
-    epicId: 1,
+    groupId: 3,
     kanbanId: 3,
     favorite: true,
     typeId: 1,
@@ -163,7 +163,7 @@ export const tasksData = [
     tags: [1],
     reporterId: 1,
     processorId: 3,
-    epicId: 1,
+    groupId: 3,
     kanbanId: 1,
     favorite: true,
     typeId: 2,
@@ -175,7 +175,7 @@ export const tasksData = [
     tags: [1],
     reporterId: 1,
     processorId: 1,
-    epicId: 1,
+    groupId: 2,
     kanbanId: 3,
     favorite: true,
     typeId: 2,
@@ -187,7 +187,7 @@ export const tasksData = [
     tags: [1],
     reporterId: 1,
     processorId: 2,
-    epicId: 1,
+    groupId: 2,
     kanbanId: 2,
     favorite: true,
     typeId: 2,
@@ -199,7 +199,7 @@ export const tasksData = [
     tags: [1],
     reporterId: 1,
     processorId: 1,
-    epicId: 1,
+    groupId: 2,
     kanbanId: 1,
     favorite: true,
     typeId: 1,
@@ -215,5 +215,32 @@ export const taskTypesData = [
   {
     id: 2,
     name: "bug",
+  },
+];
+// task-group
+export const taskGroupData = [
+  {
+    end: 1620323200000,
+    id: 1,
+    name: "骑手物料表单开发",
+    ownerId: 193359092,
+    projectId: 1,
+    start: 1617558400000,
+  },
+  {
+    end: 1621260800000,
+    id: 2,
+    name: "骑手地图开发",
+    ownerId: 193359092,
+    projectId: 1,
+    start: 1618409600000,
+  },
+  {
+    end: 1613260800000,
+    id: 3,
+    name: "骑手最优路线开发",
+    ownerId: 193359092,
+    projectId: 1,
+    start: 1610409600000,
   },
 ];
