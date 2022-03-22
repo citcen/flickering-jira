@@ -1,8 +1,11 @@
 import { ListRow, ScreenContainer } from "components/lib";
 import { useProjectInUrl } from "screens/kanban/kanban-util";
-import { useTaskGroup } from "utils/taskgroup-api";
-import { useTaskGroupSearchParams } from "./taskgroup-util";
-import { Button, List } from "antd";
+import { useDeleteTaskGroup, useTaskGroup } from "utils/taskgroup-api";
+import {
+  useTaskGroupQueryKey,
+  useTaskGroupSearchParams,
+} from "./taskgroup-util";
+import { Button, List, Modal } from "antd";
 import dayjs from "dayjs";
 import { useTasks } from "utils/task-api";
 import { Link } from "react-router-dom";
@@ -10,7 +13,20 @@ import { Link } from "react-router-dom";
 export const TaskGroupScreen = () => {
   const { data: currentProject } = useProjectInUrl();
   const { data: taskGroup } = useTaskGroup(useTaskGroupSearchParams());
-  const { data: tasks } = useTasks({ processorId: currentProject?.id });
+  const { data: tasks } = useTasks({ projectId: currentProject?.id });
+  const { mutate: deleteTaskGroup } = useDeleteTaskGroup(
+    useTaskGroupQueryKey()
+  );
+  const confirmDelete = (id: number | string) => {
+    Modal.confirm({
+      okText: "确定",
+      cancelText: "取消",
+      title: "确定删除此任务组吗？",
+      onOk() {
+        return deleteTaskGroup({ id: id });
+      },
+    });
+  };
 
   return (
     <ScreenContainer>
@@ -24,7 +40,9 @@ export const TaskGroupScreen = () => {
               title={
                 <ListRow between={true}>
                   <span>{item.name}</span>
-                  <Button type={"link"}>删除</Button>
+                  <Button type={"link"} onClick={() => confirmDelete(item.id)}>
+                    删除
+                  </Button>
                 </ListRow>
               }
               description={

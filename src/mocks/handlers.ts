@@ -640,4 +640,39 @@ export const authHandlers = [
     );
     return res(ctx.status(200), ctx.json(taskGroupData));
   }),
+  // 删除task-group
+  rest.delete(`${baseUrl}/taskGroup/:id`, (req, res, ctx) => {
+    if (!getToken()) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: "请重新登录",
+        })
+      );
+    }
+    const { id } = req.params;
+    let taskGroupData = JSON.parse(
+      window.localStorage.getItem("taskGroupData") || ""
+    );
+    taskGroupData = taskGroupData.filter((item: any) => String(item.id) !== id);
+    if (taskGroupData) {
+      window.localStorage.setItem(
+        "taskGroupData",
+        JSON.stringify(taskGroupData)
+      );
+      return res(
+        ctx.status(200),
+        ctx.json({
+          message: "删除成功",
+        })
+      );
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "删除失败",
+        })
+      );
+    }
+  }),
 ];

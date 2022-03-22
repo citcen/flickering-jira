@@ -12,10 +12,7 @@ import { SortProps } from "types/sort";
 // 查询任务
 export const useTasks = (param?: Partial<Task>) => {
   const pageReq = useHttp();
-  console.log(param);
-  console.log(typeof param);
-
-  const haveId = !!param?.processorId;
+  const haveId = !!param?.projectId;
 
   return useQuery<Task[]>(["tasks", param], () =>
     pageReq(`tasks/${param && haveId ? "" : "all"}`, { data: param })
