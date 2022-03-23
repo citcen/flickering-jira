@@ -2,7 +2,7 @@ import { useHttp } from "./http";
 import { useQuery, useMutation, QueryKey } from "react-query";
 import { useAddConfig, useDeleteConfig } from "./use-optimistic-updates";
 import { TaskGroup } from "types/task-group";
-import { Kanban } from "../types/kanban";
+import { Kanban } from "types/kanban";
 
 // 查询 任务组
 export const useTaskGroup = (param?: Partial<TaskGroup>) => {

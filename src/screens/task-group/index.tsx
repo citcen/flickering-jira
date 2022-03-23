@@ -42,7 +42,7 @@ export const TaskGroupScreen = () => {
         </Button>
       </ListRow>
       <List
-        style={{ overflow: "scroll" }}
+        style={{ overflow: "scroll", overflowX: "auto" }}
         dataSource={taskGroup}
         itemLayout={"vertical"}
         renderItem={(item) => (
